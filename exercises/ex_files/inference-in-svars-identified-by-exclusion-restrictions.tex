@@ -1,0 +1,50 @@
+Consider an exactly-identified structural VAR model subject to short- and/or long-run restrictions, where the structural impulse response of variable $j$ to structural shock $k$ at horizon $h$ is denoted as $\theta_{jk,h}$ which we simply denote as $\theta$. We are interested in the distribution of $\theta$, in particular deriving $(1-\gamma)\%$ pointwise confidence intervals given a consistent estimate $\hat{\theta}$ of $\theta$.
+\begin{enumerate}
+    \item Consider the asymptotic confidence intervals which are derived using the delta method: $$\hat{\theta} \pm z_{\gamma/2} \widehat{std}(\hat{\theta})$$ where $z_{\gamma/2}$ denotes the $\gamma/2$ quantile point of the standard normal distribution and $ \widehat{std}(\hat{\theta})$ a consistent estimate of the standard deviation of $\theta$. Name the assumptions and shortcomings of this approach.
+          \begin{solution}
+              Central idea: $\theta = g(\alpha,vec(\Sigma_u))$ and $\alpha = vec([A_1,...,A_p])$. The delta method (based on first-order Taylor Approximation) can be used to derive the asymptotic distribution of $\theta$ if we know the distributions of $\alpha$ and $vec(\Sigma_u)$. For instance if $u_t$ is considered to be a normally distributed white noise process, we may rely on asymptotics based on the normal distribution and get the stated confidence interval $\hat{\theta} \pm z_{\gamma/2} \widehat{std}(\hat{\theta})$. Thus, this works only under very restrictive assumptions. A more general approach is to rely on simulation methods (sampling techniques), i.e. bootstrap the distribution of $\theta$ based on sample analogues. There are many different approaches, we will cover only a few (and not the most recent ones). One more thing to consider, even when using this asymptotic confidence interval, is that we rely on consistent estimates for $\widehat{std}(\hat{\theta}$, for which we either may use closed-form expressions (valid under Gaussianity) or which we can base on a bootstrap approximation.
+          \end{solution}
+    \item Outline the idea and algorithm of the Standard Residual-Based Recursive-Design Bootstrap approach.
+          \begin{solution}
+              $u_t$ is iid white noise with distribution $F$, $u_t \overset{iid}{\sim} F$. Idea: approximate the unknown stationary VAR(p) data generating process of known order p: $y_t = v + A_1 y_{t-1} + ... + A_p y_{t-p} + u_t$, by the bootstrap DGP $y_t^\ast = v + \hat{A}_1 y_{t-1}^\ast + ... + \hat{A}_p y_{t-p}^\ast + u_t^\ast$ where $u_t^\ast \overset{iid}{\sim} \hat{F}_T$ and $\hat{F}_T$ is implied estimate of error distribution $F$. $\ast$ marks values corresponding to bootstrap DGP. Usually we use nonparametric approach, i.e. draw $u_t^\ast$ with replacement from set of residuals $\{\hat{u}\}_{t=1}^T$ of consistent reduced-form estimation. Key insight: $u_t^\ast$ has same distribution as $u_t$. Side note: it is advisable to use nonparametric approach instead of wrong parametric (e.g. normal distribution for $u_t^\ast$). Algorithm:
+              Given random draws for $u_t^{\ast r}, t=1,...,T$ and initial conditions $[y_{-p+1}^{\ast r}, ... ,y_0^{\ast r}]$ recursively generate for each bootstrap replication $r=1,...,R$ a sequence of bootstrap realizations $\{y_t^{\ast r}\}_{t=-p+1}^T$ as
+              \begin{align*}
+                  y_1^{\ast r} & = \hat{v} + \hat{A}_1 y_0^{\ast r} + ... + \hat{A}_p y_{-p+1}^{\ast r} + u_1^{\ast r}     \\
+                  y_2^{\ast r} & = \hat{v} + \hat{A}_1 y_1^{\ast r} + ... + \hat{A}_p y_{-p+2}^{\ast r} + u_2^{\ast r}     \\
+                  \vdots       &                                                                                           \\
+                  y_T^{\ast r} & = \hat{v} + \hat{A}_1 y_{T-1}^{\ast r} + ... + \hat{A}_p y_{-p+T}^{\ast r} + u_T^{\ast r}
+              \end{align*}
+              Then proceed as usual: estimate reduced-form (if you estimated the lag length you should estimate lag length again as well), use identification restrictions to compute bootstrapped impulse response function in each replication r. Given this approach we get a bootstrap approximation to the distribution of the IRFS, which we can use for inference.
+          \end{solution}
+    \item Name the central idea underlying the Residual-Based Wild Bootstrap.
+          \begin{solution}
+              The Standard Residual-Based Bootstrap approach requires iid regression errors, this may be a strong assumption. Alternative is to use the so-called wild bootstrap, i.e. instead of drawing $u_t^{\ast r}$ with replacement, we multiply each element of the residual bector by a sclar draw $\eta_t$ from an auxiliary distribution that has mean zero and variance 1: $u_t^{\ast r} = \hat{u}_t \eta_t, \eta_t \overset{iid}{(0,1)}$. Possible distributions: (i) standard normal distribution, (ii) two-point distribution $\eta_t = -(\sqrt{5}-1)/2$ with probability $p=(\sqrt{5}+1)/(2 \sqrt{5})$ and  $\eta_t = (\sqrt{5}+1)/2$ with probability $1-p$, or (iii) $\eta_t =1$ with probability 0.5 and $\eta_t=-1$ with probability 0.5. Usually not much difference which distribution is choosen. However, any t-statiscs based on the wild bootstrap will have to be computed based on heteroskedasticity-robust standard errors.
+          \end{solution}
+    \item Discuss the choice of significance level $\gamma$.
+          \begin{solution}
+              We are used to rely on $5\%$, there is no statistical foundation for this but simply common practice. In SVARs we rather have short samples, therefore applied researcher prefer to use $\pm$ 1 standard error bands, i.e. $68\%$ confidence intervals, instead of 2 standard error bands which correspond to $95\%$ confidence intervals. Moreover, for the bootstrap approximation, the number of draws to accurately estimate the 2.5th and 97.5th percentiles tends to be much larger than required for the 16th and 84th percentiles.
+          \end{solution}
+    \item Discuss how to draw initial conditions for a resampling method.
+          \begin{solution}
+              The usual appraoch is to draw the initial conditions at random with replacement as a block of $p$ consecutive vector valued observations. For each bootstrap replication $r$ a new block is selected. Another approach would be to always use e.g. the mean of $y_t$ as initial conditions. Or simulate a burnin-phase, e.g. of 1000 observations, and discard these.
+          \end{solution}
+    \item Given a bootstrap approximation to the distribution of the structural impulse-response function, discuss how to construct bootstrap confidence intervals from this distribution. Particularly, explain
+          \begin{enumerate}
+              \item intervals based on bootstrap standard errors
+                    \begin{solution}
+                        Take the asymptotic CI but estimate the standard deviation of the bootstrap draws of $\hat{\theta}^\ast$ numerically, i.e.
+                        $$\hat{\theta} \pm z_{\gamma/2} \widehat{std}(\hat{\theta}^\ast)$$
+                        This allows us to relax the assumption of Gaussian iid innovations underlying the contenional delta method interval.
+                    \end{solution}
+              \item Efron's percentile interval
+                    \begin{solution}
+                        Most common appraoch: Let $\hat{\theta}^\ast_{\gamma/2}$ and $\hat{\theta}^\ast_{1-\gamma/2}$ be the critical points defined by the $\gamma/2$ and $1-\gamma/2$ quantiles of the distribution of $\hat{\theta}^\ast$. Then Efron's percentile interval is:
+                        $$[\hat{\theta}^\ast_{\gamma/2},\hat{\theta}^\ast_{1-\gamma/2}]$$ However, this approach is based on an unbiased estimator of $\theta$ but does not correct for small-sample bias.
+                    \end{solution}
+              \item equal-tailed percentile-t intervals
+                    \begin{solution}
+                        Idea: create own bootstrap t-table instead of using the critical points based on the N(0,1) table. Approximate the distribution of the asymptotically pivotal (i.e. independent of other parameters) t-statistic $\hat{t}=\frac{\hat{\theta}-\theta}{\widehat{std}(\hat{\theta})}$ by $\hat{t}^\ast = \frac{\hat{\theta}^\ast-\hat{\theta}}{\widehat{std}(\hat{\theta}^\ast)}$. where $\hat{\theta}$ is treated as a fixed parameter in the bootstrap DGP. Let $\hat{t}^\ast_{\gamma/2}$ and $\hat{t}^\ast_{1-\gamma/2}$ be the critical points defined by the $\gamma/2$ and $1-\gamma/2$ quantiles of the distribution of $\hat{t}^\ast$, then the CI is given by
+                        $$[\hat{\theta}-\hat{t}^\ast_{1-\gamma/2} \widehat{std}(\hat{\theta}); \hat{\theta}-\hat{t}^\ast_{\gamma/2} \widehat{std}(\hat{\theta})]$$ Note that we need an estimate (either analytically or via bootstrap) for $\widehat{std}(\hat{\theta})$. Note that the bootstrap t-values allow for possible asymmetry in the distribution and implicitly correct for bias.
+                    \end{solution}
+          \end{enumerate}
+\end{enumerate}

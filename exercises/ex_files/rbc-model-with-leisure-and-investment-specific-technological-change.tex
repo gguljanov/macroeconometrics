@@ -1,0 +1,72 @@
+Consider the basic Real Business Cycle (RBC) model with leisure and investment-specific technological change. The representative household maximizes present as well as expected future utility
+\begin{align*}
+    \underset{\{C_{t},I_{t},L_t,K_{t}\}}{\max} E_t \sum_{j=0}^{\infty} \beta^{j} U_{t+j}
+\end{align*}
+with $\beta <1$ denoting the discount factor and $E_t$ is expectation given information at time $t$. The contemporaneous utility function
+\begin{align*}
+    U_t = \gamma \ln(C_t) + (1-\gamma) \ln{(1-L_t)}
+\end{align*}
+has two arguments: consumption $C_t$ and labor $L_t$. The marginal utility of consumption is positive, whereas more labor reduces utility. Accordingly, $\gamma$ is the elasticity of substitution between consumption and labor. In each period the household takes the real wage $W_t$ as given and supplies perfectly elastic labor service to the representative firm. In return, she receives real labor income in the amount of $W_t L_t$ and, additionally, profits $\Pi_t$ from the firm as well as revenue from lending capital $K_{t-1}$ in the previous period at interest rate $R_t$ to the firms, as it is assumed that the firm and capital stock are owned by the household. Income and wealth are used to finance consumption $C_t$ and investment $I_t$. In total, this defines the (real) budget constraint of the household:
+\begin{align*}
+    C_t + I_t = W_t L_t + R_t K_{t-1} + \Pi_t
+\end{align*}
+
+The law of motion for capital $K_t$ at the end of period $t$ is given by
+\begin{align*}
+    K_{t} = (1-\delta)K_{t-1} + Z_t I_t
+\end{align*}
+where $\delta$ is the depreciation rate and $Z_t$ investment-specific technological change. Assume that the transversality condition is full-filled.
+
+The model includes two driving forces of the economy, a neutral technological progress $A_t$ and a technological progress specific to investment $Z_t$. The laws of motion for these processes are given by:
+\begin{align*}
+    \ln{A_{t}} & = \rho_A \ln{A_{t-1}}  + \varepsilon_t^A \\
+    \ln{Z_{t}} & = \rho_Z \ln{Z_{t-1}}  + \varepsilon_t^Z
+\end{align*}
+where $\rho_A$ and $\rho_Z$ denote the persistence parameters and $\varepsilon_t^A$ and $\varepsilon_t^Z$ are assumed to be independently normally distributed with zero means and variances equal to $\sigma_A^2$ and $\sigma_Z^2$, respectively.
+
+Real profits $\Pi_t$ of the representative firm are revenues from selling output $Y_t$ minus costs from labor $W_t L_t$ and renting capital $R_t K_{t-1}$:
+\begin{align*}
+    \Pi_t = Y_{t} - W_{t} L_{t} - R_{t} K_{t-1}
+\end{align*}
+The representative firm maximizes expected profits
+\begin{align*}
+    \underset{\{L_{t},K_{t-1}\}}{\max} E_t \sum_{j=0}^{\infty} \beta^j Q_{t+j}\Pi_{t+j}
+\end{align*}
+subject to a Cobb-Douglas production function
+\begin{align*}
+    Y_t = A_t K_{t-1}^\alpha L_t^{1-\alpha}
+\end{align*}
+The discount factor takes into account that firms are owned by the household, i.e. $\beta^j Q_{t+j}$ is the present value of a unit of consumption in period $t+j$ or, respectively, the marginal utility of an additional unit of profit; therefore $Q_{t+j}=\frac{\partial U_{t+j}/\partial C_{t+j}}{\partial U_{t}/\partial C_{t}}$.
+
+Finally, we have the non-negativity constraints	$K_t \geq0$, $C_t \geq 0$ and $0\leq L_t \leq 1$ and clearing of the labor as well as goods market in equilibrium, i.e.
+\begin{align*}
+    Y_t = C_t + I_t
+\end{align*}
+
+\begin{enumerate}
+    \item Briefly provide intuition behind the introduction of investment-specific technological change.
+    \item Show that the first-order conditions of the agents are given by
+          \begin{align*}
+              E_t\left[\frac{C_{t+1}}{C_{t}}\right] & = \beta E_t\left[ \frac{Z_t}{Z_{t+1}}\left(1-\delta + Z_{t+1} R_{t+1}\right)\right], \\
+              W_t                                   & = \frac{1-\gamma}{\gamma} \frac{C_{t}}{1-L_{t}},                                     \\
+          \end{align*}
+          Interpret these equations in economic terms.
+
+    \item Show that the first-order conditions of the representative firm are given by
+          \begin{align*}
+              W_t & = (1-\alpha) A_t \left(\frac{K_{t-1}}{L_t}\right)^\alpha, \\
+              R_t & = \alpha A_t \left(\frac{L_t}{K_{t-1}}\right)^{1-\alpha}
+          \end{align*}
+          Interpret these equations in economic terms.
+    \item Discuss how to calibrate the parameters $\rho_Z$ and $\sigma_Z^2$.
+    \item Write a DYNARE mod file for this model with a feasible calibration and compute the steady state of the model either analytically or numerically.
+    \item Study the effects of both a positive neutral productivity shock and a positive investment-specific productivity shock using an impulse response analysis. How would you design a short-run identification scheme for a SVAR model based on your DSGE model to disentangle both technological shocks? In other words, which variable(s) behave differently in the short-run?
+    \item Simulate data for investment and consumption growth for 200 periods. Estimate three parameters (of your choosing) with
+          \begin{itemize}
+              \item[(i)] maximum likelihood methods
+              \item[(ii)] Bayesian methods
+          \end{itemize}
+          Provide feasible upper and lower bounds and discuss the intuition behind your priors.
+    \item Explain whether or not you are satisfied with your estimation results?
+\end{enumerate}
+\newpage

@@ -1,0 +1,28 @@
+Consider the following information criteria to estimate the order $p$ of an $AR(p)$ model
+\begin{align*}
+    AIC(p) & = \log\tilde{\sigma}^2(p) + \frac{2}{T_{eff}}n_p                  \\
+    SIC(p) & = \log\tilde{\sigma}^2(p) + \frac{\log T_{eff}}{T_{eff}}n_p       \\
+    HQC(p) & = \log\tilde{\sigma}^2(p) + \frac{2\log \log T_{eff}}{T_{eff}}n_p
+\end{align*}
+with $\tilde{\sigma}^2=\frac{1}{T_{eff}}\sum_{t={p^{max}+1}}^{T} \hat{u}_t(p)^2$ denoting the ML estimate of the variance term based on the OLS residuals $\hat{u}_t(p)$ of the corresponding estimated $AR(p)$. $n_p$ is the number of estimated parameters and $T_{eff}=T-p^{max}$, where $p^{max}$ is the maximum number of lags to consider.
+\begin{solution}\textbf{Solution to \nameref{ex:InfoCriteriaARp}}\end{solution}
+\begin{enumerate}
+    \item Provide some intuition between the different criteria. Which one (asymptotically) over- or underestimates the correct order?
+          \begin{solution}
+              The first term measures the fit of a model with order $p$ and it is the same for all criteria. This term decreases for increasing order because there is no correction for degrees of freedom in the ML variance estimator. It is important to notice, however, that the sample size is assumed to be constant for all orders and, hence, the number of presample values set aside for estimation is determined by the maximum order $p^{max}$.
+
+              The second term penalizes large AR orders. The way this term is chosen effectively distinguishes the different criteria.
+
+              The criteria have the following properties: AIC asymptotically overestimates the order with positive probability, HQC estimates the order consistently ($plim~ \hat{p}= p$), and SIC is even strongly consistent ($\hat{p} \overset{a.s.}{\rightarrow} p$) under quite general conditions if the actual DGP is a finite-order AR process and the maximum order is larger than the true order. In practice, one often relies on the AIC as having to many lags is not as severe as having to few lags. This is especially true in small samples.
+
+          \end{solution}
+    \item Write a function that computes the different order criteria for $p = 1,...,p^{max}$.
+          \begin{solution}~
+              \lstinputlisting{../progs/LagOrderSelectionARp.m}
+          \end{solution}
+
+    \item Load the dataset of the simulated AR(4) process given in \texttt{AR4.xlsx}. Which model is preferred according to the order selection criteria?
+          \begin{solution}~
+              \lstinputlisting{../progs/AR4LagSelection.m}
+          \end{solution}
+\end{enumerate}

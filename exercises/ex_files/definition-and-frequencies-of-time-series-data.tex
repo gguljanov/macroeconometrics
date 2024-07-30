@@ -1,0 +1,65 @@
+\begin{enumerate}
+    \item Briefly define a time series in terms of random variables and stochastic processes.
+          \begin{solution}
+              A time series is a collection of observations $Y_t$ indexed by the date of each observation $t$. For simplicity often one denotes $t=0,1,2,...,T$, then $\{Y_t\}_0^T = \{Y_0,Y_1,Y_2,...,Y_T\}$ is a sequence of random variables ordered in time (each $Y_t$ is a random variable) which we call a stochastic process. Sometimes we rely on an infinite sample and consider $\{Y_t\}_{t=-\infty}^\infty$ or simply $\{Y_t\}$. A stochastic process can have many outcomes, due to its randomness, and a single outcome of a stochastic process is called a sample function or realization. A time series model assigns a joint probability distribution to the stochastic process.
+          \end{solution}
+
+    \item Consider figure \ref{fig:NorwayData} depicting various time series for Norway.
+          \begin{figure}[h]
+              \centering
+              \includegraphics[width=0.6\linewidth]{NorwayDataOverview.pdf}
+              \caption{Various Time Series For Norway}
+              \label{fig:NorwayData}
+          \end{figure}
+
+          \begin{enumerate}
+              \item What data frequencies do the individual plots have? For what type of economic analysis would you use these frequencies?
+
+                    \begin{solution}
+                        Variables are either measured in levels (unemployment rate, real house price index) or as growth rates (quarterly growth GDP).
+
+                        Wide range of frequencies:
+                        \begin{itemize}
+                            \item Daily data: Figure d
+                            \item Monthly data: Figure c
+                            \item Quarterly data: Figure a and b
+                            \item Yearly data: Figure e and f
+                        \end{itemize}
+                        For business cycle analysis one usually focuses on monthly and quarterly data; for understanding stock returns we consider daily or monthly data; for long-run growth and wealth of nations yearly data might be sufficient.
+
+                        Note: Aggregation of higher frequency to lower frequencies is straightforward (eg. take some mean or last value), for the other way around we need different tools, e.g. interpolation, spline functions etc. $\rightarrow$ not straightforward!
+                    \end{solution}
+
+              \item What are the sample sizes? Is it always better to have a larger sample size from an economic and/or statistical point of view?
+
+                    \begin{solution}
+                        Sample sizes vary considerably. While quarterly data cover a much shorter sample than e.g. yearly house prices series, the number of observations are not that different (roughly 190 vs. 130 observations). Many results in statistics and econometrics depend on having many observations, so we could consider higher frequencies. But consider figure d: nearly 300 business day observations every year. However, information in all these daily data does not say much about, say, the overall state of the economy. We rather have three periods: 2006/07 when stock index hovered around 375, period from mid-2007 to mid-2008 when index fluctuated around 450 and the sharp fall during the financial crisis. From a macroeconomic perspective we rather have just three \enquote{informative} periods, all other observations are more or less just noise. So it is not always better to have a larger sample size if is uninformative.
+                    \end{solution}
+
+              \item The logarithm of a given time series $\{Y_t\}$ can be thought of as the sum of four (additive) components:
+                    $$ \log{Y_t} =y_t = \underbrace{g_t}_\text{trend} + \underbrace{c_t}_\text{cycle} + \underbrace{s_t}_\text{season} + \underbrace{\varepsilon_t}_\text{noise}$$
+                    To what degree do you find these features in the figure? Intuitively what do we mean when we talk about stationary or non-stationary data?
+
+                    \begin{solution}
+                        Non-stationary: data trends upwards or downwards over time, e.g. population and house prices (figure e and f). Stationary: observations are moving randomly up and down around a more or less constant mean (e.g. GDP growth).
+
+                        Some figures have a pronounced cyclical pattern with longer positive or negative departures from a given mean value, e.g. unemployment.
+                    \end{solution}
+
+              \item Consider the plots jointly. What are possible macroeconomic topics one could analyze?
+
+                    \begin{solution}
+                        Examining macroeconomic and financial data jointly (not just individually), we could analysis for instance:
+                        \begin{itemize}
+                            \item While financial crisis is clearly visible in the stock exchange, the effect on unemployment rate or real house prices is hard to detect. Real income, job opportunities and consumder confidence remained high. Why?
+                                  \begin{itemize}
+                                      \item Maybe monetary policy influenced the behavior of the unemployment rate as Figure c indicates expansionary monetary policy. What is role of fiscal policy in the business cycle.
+
+                                      \item Or Norwegian oil sector is highly productive (makes up 25\% of GDP) so thats the reason why the crisis was cushioned.
+                                  \end{itemize}
+
+                            \item Are house prices in line with their fundamentals? Is there a bubble?
+                        \end{itemize}
+                    \end{solution}
+          \end{enumerate}
+\end{enumerate}

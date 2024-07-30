@@ -1,0 +1,52 @@
+Consider the AR(1) model with constant
+$$ y_t = c + \phi y_{t-1} + u_t$$
+Assume that the error terms $u_t$ are i.i.d. Laplace distributed with known density
+\begin{align*}
+    f_{u_{t}}(u)=\frac{1}{2}\exp \left( -|u|\right)
+\end{align*}
+Note that $E(u_t)=0$ and $Var(u_t)=2$.
+
+\begin{solution}\textbf{Solution to \nameref{ex:MLARpLaPlace}}\end{solution}
+
+\begin{enumerate}
+    \item Derive the log-likelihood function conditional on the first observation.
+
+          \begin{solution}
+              Computation of the conditional expectation and variance:
+              \begin{itemize}
+                  \item $E[y_{t}|y_{t-1}] =
+                            c + \phi y_{t-1} $,
+                  \item $Var[y_{t}|y_{t-1}] = var(u_t) = 2$
+              \end{itemize}
+              Hence the conditional density is
+              \begin{displaymath}
+                  f_t(y_{t}|y_{t-1}; c, \phi) = \frac{1}{2} \cdot e^{-|y_{t} -(c + \phi y_{t-1})|} = \frac{1}{2} \cdot e^{-|u_t|}
+              \end{displaymath}
+              The conditional log-likelihood function is therefore given by
+              \begin{eqnarray*}
+                  \log L(y_{2}, \dots, y_{T};c, \phi)
+                  =-(T-1) \cdot log(2) - \sum_{t=2}^{T} |u_{t}|
+              \end{eqnarray*}
+          \end{solution}
+
+    \item Write a function that calculates the conditional log-likelihood of $c$ and $\phi$.
+
+          \begin{solution}~
+              \lstinputlisting{../progs/LogLikeARpNorm.m}
+          \end{solution}
+
+    \item Load the dataset given in the excel file \texttt{Laplace.xlsx}. Numerically find the maximum likelihood estimates of $c$ and $\phi$ by minimizing the negative conditional log-likelihood function.
+
+          \begin{solution}~
+              %\lstinputlisting{../progs/ARpMLLaPlace.m}
+              %\lstinputlisting{../progs/AR1MLLaPlace.m}
+          \end{solution}
+
+    \item Compare your results with the maximum likelihood estimate under the assumption of Gaussianity. That is, redo the estimation by minimizing the negative Gaussian log-likelihood function.
+
+          \begin{solution}
+              Maximizing the Gaussian likelihood, even though the underlying distribution is not Gaussian, is also known as pseudo-maximum likelihood or quasi-maximum likelihood. Note that the values are very close to each other.
+          \end{solution}
+\end{enumerate}
+
+

@@ -1,0 +1,122 @@
+Information criteria used for VAR lag order selection have the general form (see also exercise \ref{ex:InfoARp}):
+$$C(m) = log(det(\tilde{\Sigma_u})) + c_T \varphi(m)$$
+where $\tilde{\Sigma}_u=T^{-1}\sum_{t=1}^T \hat{u}_t\hat{u}_t'$ is the residual covariance matrix estimator for a reduced-form VAR model of order $m$ based on OLS residuals $\hat{u}_t$, $\varphi(m)$ is a function of the order $m$ that penalizes large VAR orders and $c_T$ is a sequence of weights that may depend on the sample size.
+The function $\varphi(m)$ corresponds to the total number of regressors in the system of VAR equations. Since there are one intercept and $mK$ lagged regressors in each equation and K equations in the VAR model, $\varphi(m)= mK^2 + K$. Information criteria are based on the premise that there is a trade-off between the improved fit of the VAR model, as $m$ increases, and the parsimony of the model. Given $T$, the fit of the model by construction improves with larger $m$, indicated by a reduction in $\log(det(\tilde{\Sigma}_u(m)))$. At the same time the penalty term, $c_T \varphi(m)$, unambiguously increases with $m$. We are searching for the value of $m$ that balances the objectives of model fit and parsimony. The choice of the penalty term determines the trade-off between these conflicting objectives.
+
+The three most commonly used information criteria for VAR models are known as the Akaike Information Criterion (AIC), Schwarz Information Criterion (SIC) and Hannan-Quinn Criterion (HQC):
+\begin{align*}
+    AIC(p) & = \log(det(\tilde{\Sigma}_u(m))) + \frac{2}{T}\varphi(m)              \\
+    SIC(p) & = \log(det(\tilde{\Sigma}_u(m))) + \frac{\log T}{T}\varphi(m)         \\
+    HQC(p) & = \log(det(\tilde{\Sigma}_u(m))) + \frac{2\log (\log T)}{T}\varphi(m)
+\end{align*}
+
+The VAR order is chosen such that the respective criterion is minimized over the possible orders $m = p^{min},...,p^{max}$. A key issue in implementing information criteria is the choice of the upper and lower bounds. In the context of a model of unknown finite lag order, the default is to set $p^{min}=0$ or sometimes $p^{min} = 1$. The value of $p^{max}$ must be chosen long enough to allow for delays in the response of the model variables to the shocks. In practice, common choices would be 12 or 24 lags for monthly data and 4 or 8 lags for quarterly data.
+\begin{enumerate}
+    \item Why is it essential that for a given lag order we compute $\tilde{\Sigma}_u(m)$ on exactly the same evaluation period, $t=p^{max}+1,...T$, for all $m$?
+          \begin{solution}
+              If the evaluation period used in computing $\tilde{\Sigma}_u(m)$ differs across $m \in \{1,...,p^{max}\}$, we risk that differences in the fit of different models are driven by the inclusion of additional observations rather than the inclusion of additional lags. In other words, we end up comparing apples and oranges, rendering the resulting ranking meaningless. For example, many canned software packages produce AIC values as a by-product of the regression output. It may seem that these values could be used to rank alternative VAR models according to their AIC values. This is not the case. The reason is that the relevant evaluation period for computing $\tilde{\Sigma}_u(m)$ depends on $p^{max}$. Without the user specifying $p^{max}$, canned software packages cannot possibly compute the correct estimate $\tilde{\Sigma}_u(m)$ or the corresponding AIC values. Instead, they may display AIC values based on the evaluation period $t = m + 1,..., T$, where $p^{min} \leq m \leq p^{max}$. It may seem that this mistake could not have important consequences, but Ng and Perron (2005) demonstrate by simulation that this mistake can result in severe distortions in the estimated order $\hat{p}$.
+          \end{solution}
+    \item Why is it essential, that the criterion function be evaluated at the ML estimator $\tilde{\Sigma}_u=T^{-1}\sum_{t=1}^T \hat{u}_t\hat{u}_t'$ rather than the OLS estimator $\hat{\Sigma}_u=(T-Km-1)^{-1}\sum_{t=1}^T \hat{u}_t\hat{u}_t'$?
+          \begin{solution}
+              The use of information criteria is predicated on the trade-off between improved fit (measured by decline in $det(\tilde{\Sigma}_u(m))$ and the reduction in parsimony (measured by an increase in the penalty term), as more lags are added. There is no such trade-off when we estimate $\Sigma_u(m)$ by
+              $$\hat{\Sigma}_u(m) = \frac{T}{T-Km-1}\tilde{\Sigma}_u(m)$$
+              Adding more lags lowers	$det(\tilde{\Sigma}_u(m))$ by construction, but also increases $\frac{T}{T-Km-1}$, invalidating the model rankings.
+          \end{solution}
+    \item Comment on the asymptotically and finite-sample properties of the criteria.
+          \begin{solution}
+              %%		If the DGP is a VAR(p 0 ) model, one criterion is whether the lag order estimator
+              %%		is consistent for the true lag order p 0 , provided p min ≤ p 0 ≤ p max . Clearly,
+              %%		sequential tests will not be consistent for p 0 because of the positive probability
+              %%		of committing a type I error in statistical testing. In contrast, information
+              %%		criteria will be consistent for p 0 under suitable conditions. The reason is that
+              %%		the probability of committing a type I error vanishes asymptotically, if we are
+              %%		careful about the choice of penalty function. As is easy to verify, the AIC
+              %%		is not consistent for p 0 , whereas the SIC and HQC are (see Lütkepohl (2005,
+              %%		Section 4.3.2)). The HQC was designed to be the least parsimonious, yet still
+              %%		consistent information criterion for VAR models. Although standard proofs of
+              %%		the consistency of the SIC and HQC and of the inconsistency of the AIC require
+              %%		the VAR model to be stationary, these results can be extended to VAR models
+              %%		with unit roots (see Paulsen (1984), Tsay (1984)).
+              %%		The price of obtaining a consistent lag order estimator is greater parsimony
+              %%		in model selection. Parsimony here means that the criterion will favor VAR
+              %%		models with fewer lags. The larger the penalty term for given T , the more
+              %%		parsimonious the lag order estimate. It can be shown that for T ≥ 16,
+              %%		indicating that the SIC tends to be more parsimonious than the HQC, which
+              %%		in turn tends to be more parsimonious than the AIC. Of course, in a given
+              %%		application, all three criteria may suggest the same lag order.
+              %%		Finite-Sample Properties of the Lag Order Estimator
+              %%		Even if we grant the premise that p min ≤ p 0 ≤ p max , one may not want to
+              %%		overrate the importance of the lag order estimator being consistent. The con-
+              %%		consistent lag order selection criteria tend to be strongly downbiased toward
+              %%		p min . For example, Kilian (2001) examines a stylized bivariate AR(4) data gen-
+              %%		erating process and shows that for a sample size of T = 80, the SIC selects a ag order of 1 among 1 ≤ p ≤ 8 with probability 92%, but the true lag order
+              %%		of 4 only with probability 2%. Even for T = 160, the probability of selecting
+              %%		p = 1 remains at 61% with a probability of only 28% of selecting the true lag
+              %%		order. Similar, if less extreme results hold for the HQC. In contrast, the AIC
+              %%		has a probability of selecting the true lag order of 57% for T = 80 and of 83%
+              %%		for T = 160. The probability of the AIC underestimating the lag order is 26%
+              %%		for T = 80 and 1% for T = 160, compared with 98% and 73% for the SIC. The
+              %%		finding that in small samples the distribution of the AIC lag order estimates
+              %%		tends to be more balanced about the true lag order than for the SIC lag order
+              %%		estimates is also consistent with simulation results in Nickelsburg (1985) and
+              %%		Lütkepohl (1985).
+              %%		The high accuracy of the AIC in these simulation studies - even in large
+              %%		samples - may be surprising at first, but reflects the asymptotic properties of
+              %%		the AIC. Although
+              %%		reflecting the inconsistency of the AIC, it can be shown that
+              %%		In other words, in the limit, the AIC will never select a lag order that is lower
+              %%		than p 0 , but it will have a tendency to select with positive probability a lag
+              %%		order in excess of p 0 . This point is important. Economists using VAR models
+              %%		have no inherent interest in the lag order of the process. They are interested
+              %%		in impulse responses, forecasts, and related statistics that can be written as
+              %%		smooth functions of VAR model parameters. These statistics of interest can be
+              %%		consistently estimated, as long as the lag order is not underestimated asymp-
+              %%		totically, so there is little to choose between the SIC, HQC, and AIC on the
+              %%		grounds of consistency. The only potential concern is that in large samples the
+              %%		AIC may choose an excessively large lag order and inflate, for example, the
+              %%		variance of the impulse response estimator.
+              %%		This concern as well is largely unfounded. Paulsen and Tjøstheim (1985)
+              %%		establish that the probability of the AIC overfitting the VAR model is negligible
+              %%		asymptotically. Whereas for K = 1, the asymptotic probability of overfitting
+              %%		is about 30%, for K = 2 it drops to at most 12%, for K = 3 to 4%, and for
+              %%		K = 4 to 1%, so for most VAR applications, the efficiency loss is not a major
+              %%		concern. These asymptotic results are consistent with simulation evidence for
+              %%		large-dimensional VAR models in Gonzalo and Pitarakis (2002) who conclude
+              %%		that the AIC tends to be by far the most reliable estimator of p 0 compared with
+              %%		sequential tests as well as other information criteria.
+              %%		Finite-sample considerations also favor the AIC. In related work, Kilian
+              %%		(2001) observes that in the context of impulse response analysis in finite sam-
+              %%		ples overestimation of the lag order is costly only to the extent that the impulse
+              %%		response estimates are less precise, but underestimation tends to greatly distort
+              %%		the impulse response functions especially at longer horizons. Hence, users ofVAR models ought to employ an asymmetric loss function, erring on the side of
+              %%		including too many lags. Kilian (2001) provides simulation evidence that VAR
+              %%		models based on the AIC lag order estimate provide more accurate impulse re-
+              %%		sponse confidence intervals than VAR models based on more parsimonious lag
+              %%		order selection criteria. He also shows that AIC-based impulse response esti-
+              %%		mates have lower MSE. This conclusion is further supported by simulation evi-
+              %%		dence in Kilian and Ivanov (2005) based on a wide range of monthly finite-order
+              %%		VAR models of the type used in empirical work. Kilian and Ivanov show that for
+              %%		monthly VAR models the AIC implies impulse response estimates with system-
+              %%		atically lower MSE than more parsimonious criteria such as the SIC or HQC.
+              %%		For quarterly VAR models, which tend to imply smoother impulse responses,
+              %%		using the HQC generates the impulse response estimates with the lowest MSE.
+              %%		There also is simulation evidence on the performance of sequential tests for
+              %%		lag order selection. At least for univariate autoregressions, several studies have
+              %%		shown that the general-to-specific sequential-testing approach is preferred to
+              %%		the specific-to-general sequential testing approach. For VAR models neither ap-
+              %%		proach is satisfactory for selecting the true lag order (see, e.g., Lütkepohl (1985);
+              %%		Nickelsburg (1985); Gonzalo and Pitarakis (2002)). Moreover, the simulation
+              %%		evidence in Kilian and Ivanov (2005) shows that sequential testing procedures
+              %%		tend to produce impulse response estimators with systematically larger MSE
+              %%		than information criteria and cannot be recommended for applied work.
+          \end{solution}
+    \item Let $m=\{0,1,...,4\}$. Select the lag-order according to the information criteria for the three-variable VAR model used in the previous two exercises.
+          \begin{solution}
+              %ble 2.1 illustrates the implementation of the SIC, HQC, and AIC criteria in
+              %the context of the three-variable VAR model example already used earlier in this
+              %chapter to illustrate alternative estimation procedures. Let m ∈ {0, 1, . . . , 4}.
+              %The lag order values that minimize a given criterion function are shown in bold.
+              %Table 2.1 shows that the SIC favors a lag order of p = 1, whereas the HQC
+              %chooses a lag order of p = 3, and the AIC chooses p = 4.
+          \end{solution}
+\end{enumerate}

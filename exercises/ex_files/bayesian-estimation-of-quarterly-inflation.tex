@@ -1,0 +1,26 @@
+Perform a Bayesian estimation of an AR(2) model of quarterly inflation with the Gibbs sampler by assuming a Gamma distribution for the marginal prior for $\sigma^2$ and a normal distribution for the conditional prior for $\beta$ given $1/\sigma^2$. To this end, do the following:
+\begin{enumerate}
+    \item Load the dataset given in data.xlsx for quarterly inflation from 1947Q1 to 2012Q3
+
+    \item Generate the matrix of regressors for the AR(2) model with constant, call it X, and a vector of endogenous variables, call it y.
+
+    \item Set the prior mean for the coefficients to a vector of zeros and the prior covariance matrix to the identity matrix. Set the shape parameter for the variance parameter to 1 and the scale parameter to 0.1. Initialize the first draw of $1/\sigma^2$ to 1.
+
+    \item Set the total number of Gibbs iterations to 5000 with a burn-in phase of 4000. Initialize output matrices for the remaining 1000 draws for the coefficient estimates and the variance estimate.
+
+    \item For $j=1,...,5000$ do the following
+          \begin{enumerate}
+              \item Sample $\beta(j)$ conditional on $1/\sigma^2(j)$ from $\mathcal{N}(M,V)$ where
+                    $$M=(\Sigma_0^{-1}+\sigma^2(j) (X'X))^{-1} \cdot (\Sigma_0^{-1}\beta_0+\sigma^2(j) X'y)$$ and
+                    $$V=(\Sigma_0^{-1} +\sigma^2(j)(X'X))^{-1}$$
+                    Optional: check the stability of the draw to avoid an explosive AR processes.
+
+              \item Sample $1/\sigma^2(j)$ conditional on $\beta(j)$ from the inverse Gamma distribution $IG(s_1,v_1)$ where $s_1 = s_0 + T$ and $v_1 = v_0 + (y-X\beta(j))'(y-X\beta(j))$. A draw from the inverse gamma distribution can be generated from $v_1/(z' z)$ where $z$ are $s_1$ draws from a standard normal distribution.
+
+              \item If you passed the burn-in phase, then save the draws of $\beta(j)$ and $1/\sigma^2(j)$.
+          \end{enumerate}
+
+    \item Plot the marginal posterior distributions, i.e. look at the histograms.
+
+    \item Compare the mean of your posterior draws with the OLS estimates.
+\end{enumerate}

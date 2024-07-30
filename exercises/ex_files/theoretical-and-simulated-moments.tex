@@ -1,0 +1,36 @@
+\begin{enumerate}
+    \item Derive the theoretical mean, covariance and autocovariance matrix of the covariance stationary VAR(1) model: $y_t = c + A y_{t-1} + u_t$
+          \begin{solution}
+              \begin{align*}
+                  \underbrace{E(y_t)}_{\mu_y} & = \underbrace{E(\nu)}_{\nu} + \underbrace{E(A y_{t-1})}_{A \mu_y} + \underbrace{E(u_t)}_{0} \\
+                  \Leftrightarrow \mu_y       & = (I-A)^{-1} \nu
+              \end{align*}
+              Put $v = (I-A)\mu_y: \underbrace{y_t -\mu_y}_{\tilde{y}_{t}} = A(\underbrace{y_{t-1}-\mu_y}_{\tilde{y}_{t-1}}) + u_t$. note: $\Gamma_y(h) = \Gamma_{\tilde{y}(h)}$
+              \begin{align*}
+                  \Gamma_y(0)
+                   & = E\left[\tilde{y}_t \tilde{y}_t'\right]= E\left[(A \tilde{y}_{t-1} + u_t)(A \tilde{y}_{t-1} + u_t)'\right]
+                  \\
+                   & = A \underbrace{E\left[\tilde{y}_{t-1}\right]}_{\Gamma_y(0)} A' + A \underbrace{E\left[\tilde{y}_{t-1}u_t'\right]}_{0} + \underbrace{E\left[u_t \tilde{y}_{t-1}'\right]}_{0} A' + \underbrace{E\left[u_t u_t'\right]}_{\Sigma_u}
+                  \\
+                  \Leftrightarrow \Gamma_y(0)
+                   & = A \Gamma_y(0) A' + \Sigma_u
+              \end{align*}
+              This is a discrete Lyapunov matrix equation, see exercise 1.5: $$vec(\Gamma_y(0)) = (I-A \otimes A)^{-1} vec(\Sigma_u)$$
+              \begin{align*}
+                  \Gamma_y(1) & =  E\left[\tilde{y}_t \tilde{y}_{t-1}'\right]= E\left[(A \tilde{y}_{t-1} + u_t)\tilde{y}_{t-1}'\right] = A E\underbrace{\left[\tilde{y}_{t-1}\tilde{y}_{t-1}'\right]}_{\Gamma_y(0)} + \underbrace{E\left[u_t y_{t-1}'\right]}_{0} = A \Gamma_y(0) \\
+                  \Gamma_y(2) & =  E\left[\tilde{y}_t \tilde{y}_{t-2}'\right]= E\left[(A \tilde{y}_{t-1} + u_t)\tilde{y}_{t-2}'\right] = A \Gamma_y(1) = A^2 \Gamma_y(0)                                                                                                          \\
+                  \Gamma_y(h) & = A^h \Gamma_y(0)
+              \end{align*}
+          \end{solution}
+
+    \item Simulate $R=100$ datasets each with $T=100$ observations for
+          \begin{align*}
+              y_t = \begin{pmatrix}0.2 &0.3 \\-0.6 & 1.1 \end{pmatrix} y_{t-1}  + u_t
+          \end{align*}
+          provided that $u_t \sim WN(0,\Sigma_u)$ and $\Sigma_u = \begin{pmatrix}0.9 &  \\ 0.2 & 0.5 \end{pmatrix}$. \\Compute the sample mean and sample covariance matrix. Compare the results with parts (1) and (2). How does your choice of R or T change results?
+
+          \begin{solution}
+              \lstinputlisting{../progs/VarMomentsMonteCarlo.m}
+              The Monte Carlo shows that either increasing R or T (or both) captures the moments better.
+          \end{solution}
+\end{enumerate}

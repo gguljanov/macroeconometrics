@@ -1,0 +1,37 @@
+Consider a stylized VAR(4) model of U.S. monetary policy with only three quarterly variables. Let $y_t = (\Delta gnp_t, i_t, \Delta p_t)'$ be stationary variables, where $gnp_t$ denotes the log of U.S. real GNP, $p_t$ the corresponding GNP deflator in logs, and $i_t$ the federal funds rate, averaged by quarter. The estimation period is restricted to 1954q4-2007q4 in order to exclude the recent period of unconventional monetary policy measures. Defining $\varepsilon_t = (\varepsilon_t^{policy}, \varepsilon_t^{AD}, \varepsilon_t^{AS})'$, the identifying restrictions can be summarized as
+$$B_0^{-1}  = \begin{bmatrix}
+        0 & * & * \\
+        * & * & * \\
+        * & * & * \\
+    \end{bmatrix} \text{ and }
+    \Theta(1) = A(1)^{-1} B_0^{-1} =  \begin{bmatrix}
+        0 & 0 & * \\
+        * & * & * \\
+        * & * & * \\
+    \end{bmatrix}
+$$
+The long-run restrictions are imposed on the cumulated impulse responses.
+\begin{enumerate}
+    \item Provide intuition given the above identifying restrictions.
+          \begin{solution}
+              The Federal Reserve Board is assumed to control the interest rate by setting the policy innovation after observing the forecast errors for deflator inflation and real GNP growth. The model is fully identified and includes an aggregate demand shock and an aggregate supply shock in addition to the monetary policy shock. The monetary policy shock does not affect real GNP either within the current quarter or in the long run. The only shock to affect the log-level of real GNP in the long run is the aggregate supply shock.
+          \end{solution}
+    \item Consider the data given in the excel sheet \texttt{RWZ2010} of \texttt{data.xlsx}. Estimate a VAR(4) model with constant term.
+    \item Estimate the structural impact matrix using a nonlinear equation solver, i.e. the objective is to find the unknown elements of $B_0^{-1}$ such that
+          $$\begin{bmatrix}
+                  vech(B_0^{-1}B_0^{-1'}-\hat{\Sigma}_u)    \\
+                  \text{short-run restrictions on }B_0^{-1} \\
+                  \text{long-run restrictions on }\Theta(1) \\
+              \end{bmatrix}$$
+          is minimized where the normalization $\Sigma_\varepsilon=I_3$ is imposed. Furthermore, use the following insight to normalize the signs of the columns of $B_0^{-1}$:
+          \begin{itemize}
+              \item a monetary policy shock (first column) raises the interest rate (second row) (monetary tightening)
+              \item a positive aggregate demand shock (second column) does not lower real GNP (first row) and inflation (third row)
+              \item a positive aggregate supply shock (3rd column) does not lower real GNP (first row) and does not raise inflation (third row)
+          \end{itemize}
+    \item Use the implied estimate of the structural impact matrix to plot the structural impulse response functions for the level of real GNP, the Federal Funds Rate and the Deflator Inflation with response to a tightening in monetary policy. Interpret your results economically.
+          \begin{solution}
+              An unexpected monetary policy tightening is associated with a persistent decline in real GNP but little response in inflation.
+          \end{solution}
+\end{enumerate}
+\newpage

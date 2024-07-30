@@ -1,0 +1,77 @@
+Consider an AR(p) model with a constant term:
+$$ y_t = c + d\cdot t + \phi_1 y_{t-1} +... + \phi_p y_{t-p} +u_{t}=Y_{t-1}\theta + u_t$$
+where $Y_{t-1}=(1,t, y_{t-1},...,y_{t-p})$, $\theta = (c,d,\phi_1,...,\phi_p)$ and $u_t\sim i.i.d.(0,\sigma_u^2)$. If the sample distribution is known to have probability density function $f(y_1,...,y_T)$, an estimation with Maximum Likelihood (ML) is possible. To this end, decompose the joint distribution by
+$$f(y_1,...,y_T;\theta,\sigma_u^2)= f_1(y_1;\theta,\sigma_u^2) \times f_2(y_2|y_1;\theta,\sigma_u^2)\times ... \times f_T(y_T|y_{T-1},...,y_1;\theta,\sigma_u^2)$$ Then the log-likelihood is
+$$\log f(y_1,...,y_T;\theta,\sigma_u^2)=\sum_{t=1}^T \log f_t(y_t|y_{t-1},...,y_1;\theta,\sigma_u^2)$$
+Denote the values that maximize the log-likelihood as $\tilde{\theta}$ and $\tilde{\sigma}_u^2$. ML estimators have (under general assumptions) an asymptotic normal distribution
+$$\sqrt{T}\begin{pmatrix}\tilde{\theta}-\theta\\\tilde{\sigma}^2_u - \sigma^2 \end{pmatrix} \overset{d}{\rightarrow} U \sim N(0,I_a(\theta,\sigma_u^2)^{-1})$$
+where $I_a(\theta,\sigma_u)$ is the asymptotic information matrix. Recall that the information matrix is defined  as minus the expectation of the Hessian of the log-likelihood:
+
+\begin{align*}
+    I(\theta,\sigma_u^2) = -E
+    \begin{pmatrix}
+        \frac{\partial^2 \log l}{\partial \theta^2}                    & \frac{\partial^2 \log l}{\partial \theta  \partial \sigma_u^2} \\
+        \frac{\partial^2 \log l}{\partial \sigma_u^2  \partial \theta} & \frac{\partial^2 \log l}{\partial (\sigma_u^2)^2}
+    \end{pmatrix}
+\end{align*}
+The asymptotic information matrix is the limit of this matrix divided by the sample size $I_a(\theta, \sigma_u^2)=\lim\limits_{T\rightarrow \infty} I(\theta, \sigma_u^2)/T$.
+In the following assume $u_t\sim N(0,\sigma_u^2)$.
+\begin{solution}\textbf{Solution to \nameref{ex:MLARpGaussian}}\end{solution}
+
+\begin{enumerate}
+    \item First consider the case of $p=1$
+          \begin{enumerate}
+              \item Derive the exact log-likelihood function for the $AR(1)$ model with $|\theta|<1$:
+                    $$y_t = c + \theta y_{t-1} + u_t$$
+                    \begin{solution}
+                        The first observation $y_1$ is a random variable with mean and variance:
+                        \begin{align*}
+                            E(y_1) = \mu = \frac{c}{1-\theta} \text{ and } var(y_1) = \frac{\sigma^2}{1-\theta^2}
+                        \end{align*}
+                        Since the errors are Gaussian, $y_1$ is also Gaussian, i.e. $y_1 \sim N\left(\frac{c}{1-\theta},\frac{\sigma^2}{1-\theta^2}\right)$. The pdf is thus:
+                        $$f_1(y_1;\theta,\sigma_u^2) = \frac{1}{\sqrt{2\pi}\sqrt{\sigma_u^2/(1-\theta^2)}}\exp\left\{-\frac{1}{2}\frac{[y_1-(c/(1-\theta))]^2}{\sigma^2/(1-\theta^2)}\right\}$$
+                        The second observation $y_2$ conditional on $y_1$ is given by $y_2 = c + \theta y_1 + u_2$. Conditional on $y_1$, $y_2$ is thus the sum of a deterministic term ($c+\theta y_1$) and the $N(0,\sigma_u^2)$ variable $u_2$. Hence:
+                        $$ y_2|y_1 \sim N(c+\theta y_1,\sigma_u^2)$$ and the pdf is given by:
+                        $$f_2(y_2|y_1;\theta,\sigma_u^2) = \frac{1}{\sqrt{2\pi\sigma_u^2}}\exp\left\{-\frac{1}{2}\frac{[y_2-c-\theta y_1]^2}{\sigma^2}\right\}$$
+                        The joint density of observations 1 and 2 is then just:
+                        $$f(y_2,y_1;\theta,\sigma_u^2) = f_2(y_2|y_1;\theta,\sigma_u^2)\cdot f_1(y_1;\theta,\sigma_u^2)$$
+                        In general the value of $y_1,y_2,...,y_{t-1}$ matter for $y_t$ only through the value $y_{t-1}$ and the density of observation $t$ conditional on the preceding $t-1$ observations is given by
+                        $$f_t(y_t|y_{t-1};\theta,\sigma_u^2) = \frac{1}{\sqrt{2\pi\sigma_u^2}}\exp\left\{-\frac{1}{2}\frac{[y_t-c-\theta y_{t-1}]^2}{\sigma^2}\right\}$$
+                        The likelihood of the complete sample can thus be calculated as
+                        $$f(y_T,y_{T-1},...,y_1;\theta,\sigma_u^2)=f_1(y_1;\theta,\sigma_u^2)\cdot \prod_{t=2}^{T}f_t(y_t|y_{t-1};\theta,\sigma_u^2)$$ The log-likelihood is therefore
+                        \begin{align*}
+                            \log l(\theta,\sigma_u^2) & = \log f_1(y_1;\theta,\sigma_u^2)+  \sum_{t=2}^{T}\log f_t(y_t|y_{t-1};\theta,\sigma_u^2)                                \\
+                                                      & = -\frac{1}{2}\log(2\pi) -\frac{1}{2}\log(\sigma_u^2/(1-\theta^2))-\frac{(y_1-(c/(1-\theta))^2)}{2\sigma^2/(1-\theta^2)} \\
+                                                      & -((T-1)/2)\log(2\pi)-((T-1)/2)\log(\sigma^2_u)-\sum_{t=2}^{T}\frac{(y_t-c-\theta y_{t-1})^2}{2\sigma_u^2}
+                        \end{align*}
+                    \end{solution}
+
+              \item Regard the value of the first observation as deterministic or, equivalently, note that its contribution to the log-likelihood disappears asymptotically. Maximize analytically the conditional log-likelihood to get the ML estimators for $\theta$ and $\sigma_u$. Compare these to the OLS estimators.
+                    \begin{solution}
+                        Discarding the first observation, the conditional log-likelihood is given by
+                        \begin{align*}
+                            \log l^c(\theta,\sigma_u^2) & = -((T-1)/2)\log(2\pi)-((T-1)/2)\log(\sigma^2_u)-\sum_{t=2}^{T}\frac{(y_t-c-\theta y_{t-1})^2}{2\sigma_u^2} \\
+                                                        & = -((T-1)/2)\log(2\pi)-((T-1)/2)\log(\sigma^2_u)-\sum_{t=2}^{T}\frac{u_t^2}{2\sigma_u^2}
+                        \end{align*}
+                        Note that the first two sums do not depend on $\theta$, thus, when maximizing $\log l^c(\theta,\sigma_u^2)$ with respect to $\theta$, we are basically minimizing the squared residuals which will yield the OLS estimator. However, the estimator for the variance is different, as we are dividing by $(T-1)$ instead of $(T-1)-(p+1)$.
+                    \end{solution}
+          \end{enumerate}
+    \item Now consider the general $AR(p)$ model.
+          \begin{enumerate}
+              \item Write a function \texttt{LogLikeARpNorm($x$,$y$,$p$,$const$)} that computes the value of the log-likelihood conditional on the first $p$ observations of a Gaussian $AR(p)$ model, i.e.
+                    $$ \log l(\theta,\sigma_u)= -\frac{T-p}{2}log(2\pi)-\frac{T-p}{2}log(\sigma_u^2)-\sum_{t=p+1}^{T}\frac{u_t^2}{2\sigma_u^2}$$
+                    where $x=(\theta',\sigma_u)'$, $y$ denotes the data vector, $p$ the number of lags and $const$ is equal to 1 if there is a constant, and equal to 2 if there is a constant and linear trend in the model.
+                    \begin{solution}~
+                        \lstinputlisting{../progs/LogLikeARpNorm.m}
+                    \end{solution}
+              \item Write a \texttt{function ML = ARpML($y$,$p$,$const$,$\alpha$)} that takes as inputs a data vector $y$, number of lags $p$ and $const=1$ if the model has a constant term or $const=2$ if the model has a constant term and linear trend. $\alpha$ denotes the significance level. The function computes (i) the maximum likelihood estimates of an AR(p) model by numerically maximizing the conditional log-likelihood function (ii) the standard errors by means of the asymptotic covariance matrix. Save all results into a structure \enquote{ML} containing the estimates of $\theta$, its standard errors, t-statistics and p-values as well as the ML estimate of $\sigma_u$.
+                    \begin{solution}~
+                        \lstinputlisting{../progs/ARpML.m}
+                    \end{solution}
+              \item Load simulated data given in the excel file \texttt{AR4.xlsx} and estimate an AR(4) model with constant term. Compare your results with the OLS estimators from the previous exercise.
+                    \begin{solution}
+                        The estimates for the coefficients are the same, but slightly different for the standard deviation of the error term.
+                        \lstinputlisting{../progs/AR4ML.m}
+                    \end{solution}
+          \end{enumerate}
+\end{enumerate}

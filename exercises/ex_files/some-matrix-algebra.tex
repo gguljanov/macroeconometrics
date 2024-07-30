@@ -1,0 +1,98 @@
+Let
+\begin{align*}
+    A = \begin{pmatrix}0.5 &0 &0 \\0.1&0.1&0.3\\0&0.2&0.3 \end{pmatrix} &  & \Sigma_u = \begin{pmatrix}2.25 & 0 & 0\\ 0 & 1 & 0.5\\ 0 & 0.5 & 0.74 \end{pmatrix} &  & R = \begin{bmatrix} \cos(\phi) & -\sin(\phi)\\ \sin(\phi) & \cos(\phi) \end{bmatrix}
+\end{align*}
+\begin{enumerate}
+    \item Compute the eigenvalues of A. What would this imply for the system $y_t = c + A y_{t-1} + u_t$ with $u_t$ being white noise?
+          \begin{solution}
+              Check whether modulus of all Eigenvalues of A are inside the unit circle, in other words its absolute value must be smaller than 1.
+              This would imply that the corresponding VAR(1) Model would be stable AND covariance stationary. See MatrixAlgebra.m  below.
+          \end{solution}
+
+    \item Consider the matrices D: $m\times n$, E: $n\times p$ and F: $p\times k$. Show that $$vec(DEF)=\left(F'\otimes D\right) vec(E),$$ where $\otimes$ is the Kronecker product and $vec$ the vectorization operator.
+          \begin{solution}
+              Example for vectorization:
+              \begin{align*}
+                  vec\begin{pmatrix} 1&3&2\\1&0&0\\1&2&2 \end{pmatrix} = \begin{pmatrix} 1 &1 &1 &3 &0&2&2&0&2\end{pmatrix}'
+              \end{align*}
+              Example for Kroneckerproduct:
+              \begin{align*}
+                  \underbrace{\begin{pmatrix} 1&3&2\\1&0&0\\1&2&2 \end{pmatrix}}_{3\times3} \otimes \underbrace{\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}}_{3\times2} =
+                  \underbrace{\begin{pmatrix} 1\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&3\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&2\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}\\1\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&0\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&0\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}\\1\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&2\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}&2\cdot\begin{pmatrix}0&5\\5&0\\1&1 \end{pmatrix}  \end{pmatrix}}_{9\times6}
+              \end{align*}
+              Consider the matrices A: $m\times n$, B: $n\times p$ and C: $p\times k$. Show that $vec(ABC)=\left(C'\otimes A\right) vec(B)$.
+              \begin{align*}
+                  ABC & = A \begin{pmatrix} b_1 & b_2 & \dots & b_p \end{pmatrix}
+                  \begin{pmatrix}
+                      c_{11} & c_{12} & \dots  & c_{1k} \\
+                      c_{21} & c_{22} & \dots  & c_{2k} \\
+                      \vdots & \vdots & \vdots & \vdots \\
+                      c_{p1} & c_{p2} & \dots  & c_{pk}
+                  \end{pmatrix}                                                                                                                                                            \\
+                      & = A \underbrace{\begin{pmatrix} b_1c_{11}+b_2c_{21}+\dots+b_p c_{p1},& b_1c_{12}+b_2c_{22}+\dots+b_p c_{p2}, & \dots ,& b_1c_{1k}+b_2c_{2k}+\dots+b_p c_{pk}\end{pmatrix}}_{n\times k}
+              \end{align*}
+
+              \begin{align*}
+                  vec(ABC) & = \begin{pmatrix} c_{11}A b_1 +c_{21}A b_2+\dots+ c_{p1}A b_p\\ c_{12}A b_1+c_{22} A b_2 + \dots +  c_{p2} A b_p \\ \vdots \\ c_{1k}A b_1+ c_{2k} A b_2 +\dots+ c_{pk} A b_p  \end{pmatrix}
+                  = \begin{pmatrix} c_{11}A &  c_{21}A  & \dots & c_{p1}A \\ c_{12}A  & c_{22} A & \dots & c_{p2} A\\ \vdots & \vdots &\vdots&\vdots \\ c_{1k}A & c_{2k} A &\dots& c_{pk} A  \end{pmatrix} \begin{pmatrix} b_1\\b_2\\ \vdots\\b_p\end{pmatrix} \\
+                           & = \left(C'\otimes A\right) vec(B)
+              \end{align*}
+
+          \end{solution}
+
+    \item Show that R is an orthogonal matrix. Why is this matrix called a rotation matrix?
+          \begin{solution}
+              A orthogonal matrix is characterized by $R'=R^{-1}$ and thus: $R'R=R R' = I$. Here:
+              \begin{align*}
+                  R'R = \begin{pmatrix}
+                            (\cos(\phi))^2 + (\sin(\phi))^2 & -\cos(\phi)\sin(\phi) + \sin(\phi)\cos(\phi) \\-\sin(\phi)\cos(\phi) + \cos(\phi)\sin(\phi) & (\sin(\phi))^2 + (\cos(\phi))^2
+                        \end{pmatrix}
+              \end{align*}
+              with $(\cos(\phi))^2 + (\sin(\phi))^2 = 1$ (so-called trigonometric Pythagoras).\\
+              Why rotation matrix? A rotation matrix rotates vectors or objects in the Euclidian space without stretching or shrinking it.
+              \begin{center}  \includegraphics[width=.5\textwidth]{Rotation.png} \end{center}
+              In this example the matrix R rotates the vector counter-clockwise given angle $\phi$. An active rotation means that the vector is multiplied by the rotation matrix and this rotates the vector counterclockwise $x' = Rx$. A passive rotation means that the coordinate system is rotated and therefore the vector is also rotated: $x' = R^{-1} x$. Later on we will need rotation matrices for identification of our shocks!
+
+          \end{solution}
+
+    \item Compute a regular lower triangular matrix $W \in \mathbb{R}^{3 \times 3}$ and a diagonal matrix $\Sigma_\varepsilon \in \mathbb{R}^{3 \times 3}$ such that $\Sigma_u=W \Sigma_\varepsilon W'$.\\Hint: Use the Cholesky factorization $\Sigma_u = P P' = W \Sigma_\varepsilon^{\frac{1}{2}}(W \Sigma_\varepsilon^{\frac{1}{2}})'$.
+          \begin{solution}
+              \begin{align*}
+                  \underbrace{\begin{pmatrix}1&0&0\\0&1&0\\0&0.5&1\end{pmatrix}}_W \underbrace{\begin{pmatrix}2.25&0&0\\0&1&0\\0&0&0.49\end{pmatrix}}_{\Sigma_\varepsilon} \underbrace{\begin{pmatrix}1&0&0\\0&1&0.5\\0&0&1\end{pmatrix}}_{W'} = \underbrace{\begin{pmatrix}2.25&0&0\\0&1&0.5\\0&0.5&0.74\end{pmatrix}}_{\Sigma}
+              \end{align*}
+          \end{solution}
+
+    \item Solve the discrete Lyapunov matrix equation $\Sigma_{y} = A\Sigma_{y}A' + \Sigma_{u}$ using
+
+          \begin{enumerate}
+              \item the Kronecker product and vectorization
+                    \begin{solution}
+                        \begin{align*}
+                            vec(\Sigma_y)               & = vec(A \Sigma_y A') + vec(\Sigma_u) = (A \otimes A)vec(\Sigma_y) + vec(\Sigma_u) \\
+                            (I-A\otimes A)vec(\Sigma_y) & = vec(\Sigma_u)                                                                   \\
+                            vec(\Sigma_y)               & = (I-A\otimes A)^{-1}vec(\Sigma_u)
+                        \end{align*}
+                    \end{solution}
+
+              \item the following iterative algorithm:
+                    \begin{align*}
+                        \Sigma_{y,0}   & = I, A_0 = A, \Sigma_{u,0} = \Sigma_{u} \\
+                        \Sigma_{y,i+1} & = A_i \Sigma_{y_i} A_i' + \Sigma_{u,i}  \\
+                        \Sigma_{u,i+1} & = A_i \Sigma_{u,i} A_i' + \Sigma_{u,i}  \\
+                        A_{i+1}        & = A_i A_i
+                    \end{align*}
+                    Write a loop until either a maximal number of iterations (say 500) is reached or each element of $\Sigma_{y,i+1}-\Sigma_{y,i}$ is less than $10^{-25}$ in absolute terms.
+
+                    \begin{solution}
+                    \end{solution}
+
+              \item Compare both approaches for A and $\Sigma_u$ given above.
+                    \begin{solution}
+                    \end{solution}
+          \end{enumerate}
+
+          \begin{solution}
+              \lstinputlisting{../progs/MatrixAlgebra.m}
+              \lstinputlisting{../progs/dlyapdoubling.m}
+          \end{solution}
+\end{enumerate}

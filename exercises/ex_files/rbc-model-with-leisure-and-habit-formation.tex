@@ -1,0 +1,72 @@
+Consider the basic Real Business Cycle (RBC) model with leisure and habit formation. The representative household maximizes present as well as expected future utility
+\begin{align*}
+    \underset{\{C_{t},I_{t},L_t,K_{t}\}}{\max} E_t \sum_{j=0}^{\infty} \beta^{j} U_{t+j}
+\end{align*}
+with $\beta <1$ denoting the discount factor and $E_t$ is expectation given information at time $t$. The contemporaneous utility function
+\begin{align*}
+    U_t = \gamma \ln(C_t - \phi C_{t-1}) + (1-\gamma) \ln{(1-L_t)}
+\end{align*}
+has three arguments: consumption $C_t$ and labor $L_t$ of the current period and consumption $C_{t-1}$ of the previous period. The marginal utility of consumption is positive, whereas more labor reduces utility. Accordingly, $\gamma$ is the elasticity of substitution between consumption and labor and $\phi$ a coefficient of persistence in habits. In each period the household takes the real wage $W_t$ as given and supplies perfectly elastic labor service to the representative firm. In return, she receives real labor income in the amount of $W_t L_t$ and, additionally, profits $\Pi_t$ from the firm as well as revenue from lending capital in the previous period $K_{t-1}$ at interest rate $R_t$ to the firms, as it is assumed that the firm and capital stock are owned by the household. Income and wealth are used to finance consumption $C_t$ and investment $I_t$. In total, this defines the (real) budget constraint of the household:
+\begin{align*}
+    C_t + I_t = W_t L_t + R_t K_{t-1} + \Pi_t
+\end{align*}
+
+The law of motion for capital $K_t$ at the end of period $t$ is given by
+\begin{align*}
+    K_{t} = (1-\delta)K_{t-1} + I_t
+\end{align*}
+where $\delta$ is the depreciation rate. Assume that the transversality condition is full-filled.
+
+Productivity $A_t$ is the driving force of the economy and evolves according to
+\begin{align*}
+    \ln{A_{t}} & =\rho_A \ln{A_{t-1}}  + \varepsilon_t^A
+\end{align*}
+where $\rho_A$ denotes the persistence parameter and $\varepsilon_t^A$ is assumed to be normally distributed with mean zero and variance $\sigma_A^2$.
+
+Real profits $\Pi_t$ of the representative firm are revenues from selling output $Y_t$ minus costs from labor $W_t L_t$ and renting capital $R_t K_{t-1}$:
+\begin{align*}
+    \Pi_t = Y_{t} - W_{t} L_{t} - R_{t} K_{t-1}
+\end{align*}
+The representative firm maximizes expected profits
+\begin{align*}
+    \underset{\{L_{t},K_{t-1}\}}{\max} E_t \sum_{j=0}^{\infty} \beta^j Q_{t+j}\Pi_{t+j}
+\end{align*}
+subject to a Cobb-Douglas production function
+\begin{align*}
+    Y_t =  A_t K_{t-1}^\alpha L_t^{1-\alpha}
+\end{align*}
+The discount factor takes into account that firms are owned by the household, i.e. $\beta^j Q_{t+j}$ is the present value of a unit of consumption in period $t+j$ or, respectively, the marginal utility of an additional unit of profit; therefore $Q_{t+j}=\frac{\partial U_{t+j}/\partial C_{t+j}}{\partial U_{t}/\partial C_{t}}$.
+
+Finally, we have the non-negativity constraints	$K_t \geq0$, $C_t \geq 0$ and $0\leq L_t \leq 1$ and clearing of the labor as well as goods market in equilibrium, i.e.
+\begin{align*}
+    Y_t = C_t + I_t
+\end{align*}
+
+\begin{enumerate}
+    \item Briefly provide intuition behind the consumption habit formation behavior.
+    \item Show that the first-order conditions of the representative household are given by
+          \begin{align*}
+              E_t\left[ \frac{\frac{1}{C_{t}-\phi C_{t-1}}-\beta \phi \frac{1}{C_{t+1}-\phi C_{t}}}{\frac{1}{C_{t+1}-\phi C_{t}}-\beta \phi \frac{1}{C_{t+2}-\phi C_{t+1}}} \right]
+               & = E_t \left[\beta (R_{t+1}+1-\delta)\right] \\
+              E_t\left[\gamma \frac{1}{C_t - \phi C_{t-1}}-\beta \gamma \phi \frac{1}{C_{t+1} - \phi C_{t}}\right]W_t
+               & = (1-\gamma)\frac{1}{1-L_t}
+          \end{align*}
+          Interpret these equations in economic terms.
+
+    \item Show that the first-order conditions of the representative firm are given by
+          \begin{align*}
+              W_t & = (1-\alpha) A_t \left(\frac{K_{t-1}}{L_t}\right)^\alpha \\
+              R_t & = \alpha A_t \left(\frac{L_t}{K_{t-1}}\right)^{1-\alpha}
+          \end{align*}
+          Interpret these equations in economic terms.
+    \item Discuss how to calibrate the parameter $\phi$.
+    \item Write a DYNARE mod file for this model with a feasible calibration and compute the steady state of the model either analytically or numerically.
+    \item Study the effects of a positive aggregate productivity shock using an impulse response analysis. What are the main differences relative to the same shock in the basic RBC model without consumption habit, i.e. $\phi=0$?
+    \item Simulate data for consumption growth for 200 periods. Estimate three parameters (of your choosing) with
+          \begin{itemize}
+              \item[(i)] maximum likelihood methods
+              \item[(ii)] Bayesian methods
+          \end{itemize}
+          Provide feasible upper and lower bounds and discuss the intuition behind your priors.
+    \item Explain whether or not you are satisfied with your estimation results?
+\end{enumerate}

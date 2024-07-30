@@ -1,0 +1,24 @@
+Consider the VAR(p) model with constant written in the more compact form
+$$ y_t = [c, A_1, ..., A_p] Z_{t-1} + u_t = A Z_{t-1}+ u_t$$
+where $Z_{t-1}=(1,y_{t-1}',...,y_{t-p}')'$. In VAR analysis, it is common to postulate that the innovations, $u_t$, are iid $\mathcal{N}(0,\Sigma_u)$ random variables. This assumption implies that the $y_t$'s are also jointly normal and, for given initial values $y_{-p+1},...,y_{0}$,
+$$f_t(y_t|y_{t-1},...,y_{-p+1})=\left(\frac{1}{2\pi}\right)^{K/2} det(\Sigma_u)^{-1/2}exp\left\{-\frac{1}{2}u_t'\Sigma_u^{-1}u_t\right\}$$
+Hence, the log-likelihood becomes (see also exercise \ref{ex:MLARp}):
+
+$$\log l = -\frac{KT}{2}\log(2\pi) - \frac{T}{2}log(det(\Sigma_u))- \frac{1}{2}\sum_{t=1}^Tu_t'\Sigma_u^{-1}u_t$$
+Maximizing this function with respect to the unknown parameters yields the Gaussian ML estimator.
+\begin{enumerate}
+    \item Compare the Gaussian ML estimator with the OLS estimator from the previous exercise. Comment on the asymptotic distribution.
+          \begin{solution}
+              They are identical, hence the asymptotic normality holds as well.
+          \end{solution}
+    \item Provide an expression for the ML estimator of the innovation covariance matrix.
+          \begin{solution}
+              $$\tilde{\Sigma}_u(m) = \frac{T-Km-1}{T}\hat{\Sigma}_u(m)$$
+          \end{solution}
+    \item Redo the estimation from the previous exercise.
+          \begin{solution}
+              \lstinputlisting{../progs/ThreeVariableVAR.m}
+          \end{solution}
+\end{enumerate}
+
+\newpage

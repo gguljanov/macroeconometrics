@@ -1,0 +1,17 @@
+Consider an AR(p) model with a constant term:
+$$ y_t = c + d\cdot t + \phi_1 y_{t-1} +... + \phi_p y_{t-p} +u_{t}=Y_{t-1}'\theta + u_t$$
+where $Y_{t-1}=(1,t,y_{t-1},...,y_{t-p})$ and $u_t\sim WN(0,\sigma_u^2)$. The ordinary least-squares (OLS) estimator of $\theta = (c,d,\phi_1,...,\phi_p)$ is $$\hat{\theta} = \left(\sum_{t=1}^TY_{t-1}Y_{t-1}'\right)^{-1}\sum_{t=1}^T Y_{t-1} y_t$$ Under the assumptions of stationarity and other standard regularity conditions one can derive that
+$$\sqrt{T}(\hat{\theta}-\theta)\overset{d}{\rightarrow}\tilde{U}\sim N\left(0,\sigma_u^2 ~plim\left(T^{-1}\sum_{t=1}^T Y_{t-1}Y_{t-1}'\right)^{-1} \right)$$
+The residual variance may be estimated consistently by $$\hat{\sigma}_u^2 = \frac{1}{T-p-1}\sum_{t=1}^T\hat{u}_t^2$$ where $\hat{u}_t=y_t -Y_{t-1}'\hat{\theta}$ are the OLS residuals.
+\begin{solution}\textbf{Solution to \nameref{ex:OLSARp}}\end{solution}
+
+\begin{enumerate}
+    \item Write a \texttt{function OLS = ARpOLS($y$,$p$,$const$,$\alpha$)} that takes as inputs a data vector $y$ and number of lags $p$. The input $const$ is $1$ if there is a constant in the model, $2$ if there is a constant and a linear trend. The function outputs a structure OLS, which contains the OLS estimates of $\theta$, its standard errors, t-statistics and p-values given significance value $\alpha$, as well as the OLS estimate of $\sigma_u$.
+          \begin{solution}~
+              \lstinputlisting{../progs/ARpOLS.m}
+          \end{solution}
+    \item Load simulated data for an AR(4) model given in the excel file \texttt{AR4.xlsx}. Estimate an AR(4) model with a constant term using your \texttt{ARpOLS} function.
+          \begin{solution}~
+              \lstinputlisting{../progs/AR4OLS.m}
+          \end{solution}
+\end{enumerate}

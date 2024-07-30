@@ -1,0 +1,133 @@
+Suppose that the sequence $Y_{1},Y_{2},\ldots $ is an $AR(1)$ process, i.e.
+$$Y_{t}-\mu =\phi \left(Y_{t-1}-\mu\right) +\varepsilon _{t}$$ where $\varepsilon _{t}\sim iid(0,\sigma _{\varepsilon }^{2})$ is (not necessarily but in our case) normally distributed and $|\phi |<1$.
+\begin{solution}\textbf{Solution to \nameref{ex:CLTDep}}\end{solution}
+\begin{enumerate}
+    \item Briefly describe the intuition and result of the Lindeberg-Levy Central Limit Theorem for iid random variables. Why does it not hold for the $AR(1)$ process?
+          \begin{solution}
+              We usually consider the Lindeberg-Levy Central Limit Theorem for iid random variables with finite mean $\mu$ and finite variance $\sigma_Y^2$. Then we get $$\sqrt{T} (\hat{\mu}-\mu) \overset{d}{\rightarrow} N(0,\sigma_Y^2)$$ with $\hat{\mu} = \bar{Y}_T = \frac{1}{T} \sum_{t=1}^T y_t$. Or more compactly using standardized variables: $$z = \sqrt{T}\frac{\hat{\mu}-\mu}{\sigma_Y}\overset{d}{\rightarrow} U \sim N(0,1)$$
+              That is we look at convergence in distribution, where instead of converging to a constant, we converge to a random variable which has some distribution. A sequence $\bar{Y}_{1},\bar{Y}_{2},\ldots $ of random variables with distribution functions $F_{1},F_{2},\ldots $ converges \textbf{in distribution (weakly; in law)} to a variable $\mu$ with distribution function $F$, if
+              \begin{equation*}
+                  \lim_{T\rightarrow \infty }F_{T}(x)=F(x)
+              \end{equation*}
+              for all $x\in \mathbb{R}$ where $F(x)$ is continuous. Notation
+              \begin{equation*}
+                  \bar{Y}_{T}\overset{d}{\rightarrow }\mu
+              \end{equation*}
+              For the AR(1) process we have dependent and not iid data, so we require a different central limit theorem, either for Martingale-Difference-processes or mixing processes.
+
+          \end{solution}
+    \item Show that $Y_t$ has mean equal to $\mu $ and finite variance equal to $\sigma_\varepsilon^2/(1-\phi^2)$.
+          \begin{solution}
+              First let's derive the expectation and variance of the AR(1) process with $|\phi|<1$. For this, we use recursive substitution techniques given a starting value $Y_0$:
+              \begin{align*}
+                  Y_t = (1-\phi)(1+\phi+\phi^2+\dots+\phi^T)\mu + \varepsilon_t + \phi \varepsilon_{t-1} + \phi^2 \varepsilon_{t-2} + \dots + \phi^T \varepsilon_{t-T} + \phi^{T+1} Y_0
+              \end{align*}
+              Note that $\lim_{T\rightarrow \infty} \phi^{T+1} = 0$ and $\lim_{T\rightarrow \infty} \sum_{j=0}^\infty \phi^j = \frac{1}{1-\phi}$, since $|\phi|<1$. The AR(1) process with $|\phi|<1$ can therefore be equally represented by
+              \begin{align*}
+                  Y_t = \mu + \sum_{j=1}^\infty \phi^j \varepsilon_{t-j}
+              \end{align*}
+              Its expectation and variance are then equal to
+              \begin{align*}
+                  E(Y_t)   & = \mu + \sum_{j=1}^\infty \phi^j E(\varepsilon_{t-j}) = \mu                                                                                       \\
+                  Var(Y_t) & = \sum_{j=1}^\infty (\phi^j)^2 var(\varepsilon_{t-j}) = \sum_{j=1}^\infty (\phi^2)^j \sigma_\varepsilon^2 = \frac{\sigma_\varepsilon^2}{1-\phi^2}
+              \end{align*}
+          \end{solution}
+    \item To derive the asymptotic distribution of the sample mean, do the following steps:
+          \begin{enumerate}
+              \item Derive the asymptotic distribution of $\frac{1}{\sqrt{T} } \sum_{t=1}^T \varepsilon_t$.
+                    \begin{solution}
+                        Due to our assumptions on $\varepsilon_t$, we can use the central limit theorem such that
+                        \begin{equation*}
+                            \sqrt{T} \left(\frac{1}{T} \sum_{t=1}^T \varepsilon_t \right) = \frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t  \overset{d}{\rightarrow} U_\varepsilon \sim N(0,\sigma_\varepsilon^2)
+                        \end{equation*}
+                    \end{solution}
+              \item Show that
+                    $
+                        \frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t = \sqrt{T}\left[(1-\phi)\left(\hat{\mu}-\mu\right) + \phi\left(\frac{Y_T - Y_0}{T}\right)\right]
+                    $
+                    with $\hat{\mu} =\frac{1}{T}\sum_{t=1}^{T}Y_{t}$.
+                    \begin{solution}
+                        Let's have a look at $\frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t$:
+                        \begin{align*}
+                            \frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t
+                             & = \frac{1}{\sqrt{T}} \sum_{t=1}^T \left[(Y_t-\mu)-\phi(Y_{t-1}-\mu)\right]                                                                      \\
+                             & = \frac{1}{\sqrt{T}} \left[\sum_{t=1}^T (Y_t-\mu)- \phi\sum_{t=1}^T(Y_{t-1}-\mu)\right]                                                         \\
+                             & = \frac{1}{\sqrt{T}} \left[\sum_{t=1}^T (Y_t-\mu)- \phi\left[\sum_{t=1}^T(Y_{t}-\mu)-(Y_T - Y_0)\right]\right]                                  \\
+                             & = \sqrt{T} \left[\frac{1}{T}\sum_{t=1}^T (Y_t-\mu)- \phi\left[\frac{1}{T}\sum_{t=1}^T(Y_{t}-\mu)-\left(\frac{Y_T - Y_0}{T}\right)\right]\right] \\
+                             & = \sqrt{T} \left[\hat{\mu}-\mu- \phi\left[\hat{\mu}-\mu-\left(\frac{Y_T - Y_0}{T}\right)\right]\right]                                          \\
+                             & = \sqrt{T}\left[(1-\phi)\left(\hat{\mu}-\mu\right) + \phi\left(\frac{Y_T - Y_0}{T}\right)\right]
+                        \end{align*}
+                    \end{solution}
+              \item Show that
+                    $
+                        \textsl{plim}\left[\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right] = 0
+                    $.
+                    \emph{Hint: Use Tchebychev's Inequality, i.e. for a random variable $X$ with expectation $\mu_x$ and finite variance $\sigma_x^2$: $$Pr(|X-\mu_x|> \delta) \leq \frac{\sigma_x^2}{\delta^2}$$ for any small real number $\delta>0$.}
+                    \begin{solution}
+                        Using the definition of the probability limit, we have to show that for any $\delta>0$
+                        \begin{align*}
+                            \lim_{T\rightarrow \infty} P\left(\left|\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right|> \delta\right) = 0
+                        \end{align*}
+                        By Tchebychev's Inequality we have
+                        \begin{align*}
+                            P\left(\left|\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right|> \delta\right) \leq \frac{1}{\delta^2} var\left[\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right]
+                        \end{align*}
+                        Let's have a look at $var\left[\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right]$:
+                        \begin{align*}
+                            var\left[\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right]
+                             & = \frac{1}{T}\left(\frac{\phi}{1-\phi}\right)^2 var(Y_T - Y_0)                                                                                                                                                                                        \\
+                             & = \frac{1}{T}\left(\frac{\phi}{1-\phi}\right)^2 \left(var(Y_T) + var(Y_0) - 2 cov(Y_T,Y_0)\right]                                                                                                                                                     \\
+                             & = \frac{1}{T}\left(\frac{\phi}{1-\phi}\right)^2 \left[\frac{\sigma_\varepsilon^2}{1-\phi^2} + \frac{\sigma_\varepsilon^2}{1-\phi^2} - 2 corr(Y_T,Y_0)\sqrt{\frac{\sigma_\varepsilon^2}{1-\phi^2}}\sqrt{\frac{\sigma_\varepsilon^2}{1-\phi^2}} \right] \\
+                             & \leq \frac{1}{T}\left(\frac{\phi}{1-\phi}\right)^2 4 \left(\frac{\sigma_\varepsilon^2}{1-\phi^2}\right)
+                        \end{align*}
+                        since $corr(Y_T,Y_0) \geq -1$.
+
+                        Thus for any $\delta>0$, we have
+                        \begin{align*}
+                            P\left(\left|\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right|> \delta\right) \leq \frac{1}{\delta^2} \frac{1}{T}\left(\frac{\phi}{1-\phi}\right)^2 4 \left(\frac{\sigma_\varepsilon^2}{1-\phi^2}\right)
+                        \end{align*}
+                        In the limit
+                        \begin{align*}
+                            \lim_{T\rightarrow \infty} P\left(\left|\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right|> \delta\right) = 0.
+                        \end{align*}
+                    \end{solution}
+              \item Put your results of (a),(b) and (c) together and derive the asymptotic distribution of the sample mean. That is, show that
+                    \begin{align*}
+                        Z_{T} =\sqrt{T}\frac{\hat{\mu} -\mu }{\sigma_Z} \overset{d}{\rightarrow} U \sim N(0,1)
+                    \end{align*}
+                    for $\sigma_Z=\sqrt{\sigma_\varepsilon^2/(1-\phi)^2}$.
+                    \begin{solution}
+                        Now, let's go back to
+                        \begin{align*}
+                            \frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t = \sqrt{T}\left[(1-\phi)\left(\hat{\mu}-\mu\right) + \phi\left(\frac{Y_T - Y_0}{T}\right)\right]
+                        \end{align*}
+                        Let's divide by $(1-\phi)$
+                        \begin{align*}
+                            \frac{\frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t}{1-\phi} & = \sqrt{T}\left(\hat{\mu}-\mu\right) + \frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)
+                        \end{align*}
+
+                        For the left-hand-side we have
+                        \begin{align*}
+                            \frac{\frac{1}{\sqrt{T}} \sum_{t=1}^T \varepsilon_t}{1-\phi} \overset{d}{\rightarrow} \tilde{U_\varepsilon} \sim N\left(0,\frac{\sigma_\varepsilon^2}{(1-\phi)^2}\right)
+                        \end{align*}
+
+                        Since $\textsl{plim}\left[\frac{\phi}{1-\phi}\left(\frac{Y_T - Y_0}{\sqrt{T}}\right)\right] = 0$
+                        \begin{align*}
+                            \sqrt{T}\left(\hat{\mu}-\mu\right) \overset{d}{\rightarrow} \tilde{U} \sim N\left(0,\frac{\sigma_\varepsilon^2}{(1-\phi)^2}\right)
+                        \end{align*}
+                        and we're done. That is, set $\sigma_Z^2 = \frac{\sigma_\varepsilon^2}{(1-\phi)^2}$, then
+                        \begin{align*}
+                            Z_T = \sqrt{T}\frac{\hat{\mu}-\mu}{\sigma_Z} \overset{d}{\rightarrow} U \sim N(0,1)
+                        \end{align*}
+                    \end{solution}
+          \end{enumerate}
+    \item Write a program to demonstrate the central limit theorem for the AR(1) process. To this end:
+          \begin{itemize}
+              \item Simulate $B=5000$ stationary (e.g. $\phi=0.8$) AR(1) processes with each $T=10000$ observations. Store these in a $T \times B$ matrix $Y$.
+              \item Compute $\hat{\mu}$ for each column of $Y$.
+              \item Plot the histograms of the (naive) standardized variables $$ \widetilde{Z}_T = \sqrt{T}\frac{\hat{\mu}-\mu}{\sigma_{\varepsilon }/\sqrt{1-\phi^2}}$$ and of the (correct) standardized variables $$ Z_T = \sqrt{T}\frac{\hat{\mu}-\mu}{\sigma_{\varepsilon }/(1-\phi)}$$ Compare these to the standard normal distribution.
+          \end{itemize}
+          \begin{solution}~
+              \lstinputlisting{../progs/CentralLimitDependentData.m}
+          \end{solution}
+\end{enumerate}

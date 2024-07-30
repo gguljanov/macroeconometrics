@@ -1,0 +1,100 @@
+Consider the simple RBC model with log-utility and full depreciation. The objective is to maximize
+\begin{align*}
+    \underset{\{C_{t}\}}{\max}~E_t \sum_{j=0}^{\infty} \beta^{j} \log(C_{t+j})
+\end{align*}
+subject to the law of motion for capital $K_t$ at the beginning of period $t$
+\begin{align*}
+    K_{t+1} = A_tK_t^\alpha - C_t
+\end{align*}
+with $\beta <1$ denoting the discount factor and $E_t$ is expectation given information at time $t$. Productivity $A_t$ is the driving force of the economy and evolves according to
+\begin{align*}
+    \log{A_{t+1}} & = \rho_A \log{A_t}  + \varepsilon_t^A
+\end{align*}
+where $\rho_A$ denotes the persistence parameter and $\varepsilon_t^A$ is assumed to be normally distributed with mean zero and variance $\sigma_A^2$.
+
+Finally, we assume that the transversality condition is full-filled and the following non-negativity constraints $K_t \geq0$ and $C_t \geq 0$.
+
+\begin{enumerate}
+    \item Show that the first-order condition is given by
+          \begin{align*}
+              C_t^{-1} & = \alpha \beta E_t C_{t+1}^{-1} A_{t+1} K_{t+1}^{\alpha-1}
+          \end{align*}
+          \begin{solution}
+              Due to our assumptions , we will not have corner solutions and can neglect the non-negativity constraints. Due to the transversality condition and the concave optimization problem, we only need to focus on the first-order conditions.
+              The Lagrangian for the household problem is
+              \begin{align*}
+                  L = E_t\sum_{j=0}^{\infty}\beta^j\left\{\log(C_{t+j}) + \lambda_{t+j} \left(A_{t+j}K_{t+j}^\alpha -C_t - K_{t+j+1}\right)\right\}
+              \end{align*}
+              Note that the problem is not to choose $\{C_t,K_{t+1}\}_{t=0}^\infty$ all at once in an open-loop policy, but to choose these variables sequentially given the information at time $t$ in a closed-loop policy.
+
+              The first-order condition w.r.t. $C_t$ is given by
+              \begin{align*}
+                  \frac{\partial L}{\partial C_{t}} & = E_t \left(C_t^{-1}-\lambda_{t}\right) = 0       \\
+                  \Leftrightarrow \lambda_{t}       & = C_{t}^{-1}                                & (I)
+              \end{align*}
+              The first-order condition w.r.t. $K_{t+1}$ is given by
+              \begin{align*}
+                  \frac{\partial L}{\partial K_{t+1}} & = E_t (-\lambda_{t}) +
+                  E_t \beta \left(\lambda_{t+1}\alpha A_{t+1} K_{t+1}^{\alpha-1}\right) = 0                              \\
+                  \Leftrightarrow \lambda_{t}         & = \alpha\beta E_t \lambda_{t+1}A_{t+1} K_{t+1}^{\alpha-1} & (II)
+              \end{align*}
+
+              (I) and (II) yields
+              \begin{align*}
+                  C_t^{-1} = \alpha\beta E_t C_{t+1}^{-1} A_{t+1} K_{t+1}^{\alpha-1}
+              \end{align*}
+          \end{solution}
+    \item Compute the steady state of the model, in the sense that there is a set of values for the endogenous variables that in equilibrium remain constant over time.
+          \begin{solution}
+              First, consider the steady value of technology:
+              $$\log\bar{A}=\rho_A \log\bar{A} + 0 \Leftrightarrow \log\bar{A} = 0 \Leftrightarrow \bar{A} = 1$$
+              The Euler equation in steady state becomes:
+              \begin{align*}
+                  \bar{K} = (\alpha \beta \bar{A})^{\frac{1}{1-\alpha}}
+              \end{align*}
+          \end{solution}
+    \item The solution to a DSGE model is characterized by decision rules $g$ and $h$, so-called policy functions, for the control variable $C_t$ and the state variable $K_{t+1}$:
+          \begin{align*}
+              C_{t}         & = g(A_t,K_t)                             \\
+              K_{t+1}       & = h(A_t,K_t)                             \\
+              \log{A_{t+1}} & = \rho_A \log{A_{t}} + \varepsilon_{t+1}
+          \end{align*}
+          Guess that the functions $g$ and $h$ are linear in $A_t K_t^\alpha$:
+          \begin{align*}
+              C_{t}   & = g_C A_t K_t^\alpha \\
+              K_{t+1} & = h_K A_t K_t^\alpha
+          \end{align*}
+          Derive the scalar values $g_C$ and $h_C$ in terms of model parameters $\alpha$ and $\beta$.
+          \begin{solution}
+              Inserting the guessed policy function for $C_t$ inside the the capital accumulation equation yields:
+              \begin{align*}
+                  K_{t+1} = A_{t}K_{t}^\alpha - g_C A_t K_t^\alpha = (1-g_C) A_t K_t^\alpha
+              \end{align*}
+              Therefore, $h_K=(1-g_C)$. Once we derive $g_C$, we get  $h_K$.
+
+              Inserting the guessed policy function for $C_t$ inside the Euler equation yields
+              \begin{align*}
+                  \frac{1}{C_t} = \alpha \beta E_t \frac{1}{C_{t+1}}A_{t+1} K_{t+1}^{\alpha-1}                                   \\
+                  \frac{1}{g_C A_t K_t^\alpha} = \alpha \beta E_t \frac{1}{g_C A_{t+1} K_{t+1}^\alpha}A_{t+1} K_{t+1}^{\alpha-1} \\
+                  A_t K_t^\alpha = \frac{1}{\alpha \beta} E_t K_{t+1}
+              \end{align*}
+              Inserting the decision rule for capital:
+              \begin{align*}
+                  A_t K_t^\alpha = \frac{1}{\alpha \beta} (1-g_C)A_t K_t^\alpha \\
+                  \Leftrightarrow g_C = (1-\alpha \beta)
+              \end{align*}
+              Thus the policy function for $C_t$ is
+              $$ C_t = (1-\alpha\beta) A_t K_t^\alpha$$
+              and for $K_{t+1}$:
+              $$ K_{t+1} = \alpha \beta A_t K_t^\alpha$$
+              In summary we have found analytically the policy functions. This will not be possible for other DSGE models and we have to rely on numerical methods to approximate the highly nonlinear functions $g$ and $h$.
+          \end{solution}
+    \item Write a DYNARE mod file for this RBC model with a feasible calibration for an OECD country. Compute the steady state and approximate the policy and transition functions with a first-order perturbation method (\texttt{stoch\_simul(order=1,irf=0,periods=0,nomoments)}).
+          \begin{solution}~
+              \lstinputlisting{../progs/Dynare/BrockMirman/BrockMirman.mod}
+          \end{solution}
+    \item Compare simulated data for the endogenous variables as well as impulse response functions of a one-standard-deviation technology shock based on the true solution with DYNARE's approximated one.
+          \begin{solution}
+              Set \texttt{comparison = 1} and then run the above mod file with Dynare. You see that the first-order approximation of the true solution is quite accurate only when we are in the vicinity of the steady state. For technology the first-order approximation is exactly the true decision function, because the first-order approximation is equal to a log-linearization. In the IRFs we understate the effect of the technology shock.
+          \end{solution}
+\end{enumerate}

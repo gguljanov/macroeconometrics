@@ -1,0 +1,13 @@
+Consider a simple 2-variable model:
+\begin{align*}
+    i_t   & =  \beta \pi_t + \gamma_1 i_{t-1} + \gamma_2 \pi_{t-1} + \sigma_{MP} \varepsilon_t^{MP}  \\
+    \pi_t & =  \delta i_t + \gamma_3 i_{t-1} + \gamma_4 \pi_{t-1} + \sigma_{\pi} \varepsilon_t^{\pi}
+\end{align*}
+where $i_t$ denotes the interest rate set by the central bank and $\pi_t$ the inflation rate. Assume
+for the structural shocks: $\varepsilon_{t}=(\varepsilon_t^{MP}, \varepsilon_t^{\pi})' \sim N(0,I_2)$.
+\begin{enumerate}
+    \item Rewrite the model in a compact matrix form $B_0 y_t = B_1 y_{t-1} + \varepsilon_{t}$. Note that this is a structural VAR(1) model.
+    \item Since the structural VAR model is not directly observable, derive the reduced-form representation: $y_t=A_1 y_{t-1} + u_t$. What is the relationship between structural shocks $\varepsilon_t$ and reduced-form residuals $u_t$?
+    \item Consider the dynamic causal effect of the monetary policy shock $\varepsilon_t^{MP}$ on $y_t$, i.e. an interest rate increase while holding all other interventions constant: In other words, derive the impulse response function (IRF) of $y_t$ to the shock $\varepsilon_t^{MP}$: $$\frac{\partial y_{t+h}}{\partial \varepsilon_t^{MP}}, \text{ for } h=1,2,3,...$$
+    \item In your own words, explain the identification problem in SVAR models. Provide intuition behind the popular identification assumptions of short-run, long-run and sign restrictions.
+\end{enumerate}

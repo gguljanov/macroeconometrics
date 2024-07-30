@@ -1,0 +1,32 @@
+Let $y_t$ be a K-dimensional covariance stationary random vector. Consider the VAR(p)-process
+\begin{align*}
+    y_t = c + \sum_{i=1}^p A_i {y_{t-i}} + u_t
+\end{align*}
+\begin{enumerate}
+    \item What are the dimensions of $\nu, A_i$ and $u_{t}$?
+          \begin{solution}
+              $\nu$ snd $u_t$ are both K-dimensional vectors: $\nu,u_t \in \mathbb{R}^{K \times 1}$. $A_i$ is a $K \times K-$Matrix.
+          \end{solution}
+    \item Assume that $E(u_t) = 0; E(u_t u_t') = \Sigma_u$ with $\Sigma_u$ being symmetric and positive definite. Which additional assumptions do we need to assure that $u_t$ is a multivariate white noise process?
+          \begin{solution}
+
+              We must have ${\Gamma_u(h)} = Cov(u_t, u_{t-h}) = 0_{K\times K},s\neq0$, that is all autocovariances are zero for $h\neq0$. We do not need a distributional assumption!
+          \end{solution}
+    \item Consider a VAR(2) model with K=4 variables and a constant term. How many parameters do we need to estimate?
+          \begin{solution}
+
+              General: $K$ constants + $K^2\cdot p$ Autoregressive coefficients + $K(K+1)/2$ covariance terms. Here: $4+4^2\cdot2+4\cdot(4+1)/2=46$. That's a lot! Therefore we will try to restrict some parameters (e.g. set equal to zero) or consider only small VAR systems, e.g. K=3 p=1.
+
+          \end{solution}
+    \item Show how to represent a VAR(3) model as a VAR(1) model. Write a function that transforms any VAR(p) model into VAR(1), i.e. its \enquote{companion form}.
+          \begin{solution}
+              VAR(3): $y_t = \nu + A_1 y_{t-1} + A_2 y_{t-2} + A_3 y_{t-3} + u_t$. Idea: Stack $y_t, y_{t-1}$ and $y_{t-2}$ into a vector and note that $y_{t-1}=y_{t-1},y_{t-2}=y_{t-2}$. That is
+              \begin{align*}
+                  \underbrace{\begin{bmatrix} y_t\\ y_{t-1} \\ y_{t-2} \end{bmatrix}}_{\widetilde{y}_t} = \underbrace{\begin{bmatrix} A_1 & A_2 & A_3 \\ I & 0 & 0\\ 0&I&0\end{bmatrix}}_{\widetilde{A}} \underbrace{\begin{bmatrix} y_{t-1}\\ y_{t-2} \\ y_{t-3} \end{bmatrix}}_{\widetilde{y}_{t-1}} + \underbrace{\begin{bmatrix} u_t \\ 0 \\ 0\end{bmatrix}}_{\widetilde{u}_t}
+              \end{align*}
+              Therefore: $\widetilde{y}_t = \widetilde{A} \widetilde{y}_{t-1} + \widetilde{u}_t$. This is called the Companion Form.
+
+              \lstinputlisting{../progs/CompanionForm.m}
+          \end{solution}
+\end{enumerate}
+\newpage

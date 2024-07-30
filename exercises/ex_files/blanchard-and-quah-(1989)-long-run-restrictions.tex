@@ -1,0 +1,19 @@
+Consider a bivariate model of the U.S. economy. Let $ur_t$ denote the U.S. unemployment rate
+and $gdp_t$ the log of U.S. real GDP. Assume that $y_t = (\Delta gdp_t, ur_t)'$ is stationary. The model imposes two shocks, an aggregate supply shock, $\varepsilon_t^{AS}$ and an aggregate demand shock, $\varepsilon_t^{AD}$.
+
+\begin{enumerate}
+    \item Derive the effect of a given structural shock on the level of real GDP, i.e. $gdp_t$.
+    \item Discuss the implications  on the long-run structural impulse responses of requiring $gdp_t$ to return to its initial level in the long-run in response to an aggregate demand shock.
+    \item Given knowledge of the reduced-form VAR model parameters, show how to recover the short-run impact matrix $B_0^{-1}$ from the long-run structural impulse response matrix.
+    \item Consider the data given in the \texttt{BlanchardQuah1989} sheet of \texttt{data.xslx} and estimate a VAR(8) with constant. The structural shocks are identified by imposing that $\varepsilon_t^{AD}$ has no long-run effect on the level of real GDP. Estimate the impact matrix $B_0^{-1}$ using
+          \begin{enumerate}
+              \item the Cholesky decomposition on $\hat{A}(1)^{-1}\hat{\Sigma}_u\hat{A}(1)^{-1'}= \Theta(1) \Theta(1)'$
+              \item a nonlinear equation solver that minimizes $F(B_0^{-1}) = \begin{bmatrix}
+                            vech(B_0^{-1}B_0^{-1'}-\hat{\Sigma}_u) \\
+                            \text{restrictions on } \Theta(1)
+                        \end{bmatrix}$
+          \end{enumerate}
+          where $\Theta(1)=(I-A_1-...-A_p)^{-1}B_0^{-1} = A(1)^{-1}B_0^{-1}$. Assume that
+          $E(\varepsilon_t\varepsilon_t')=I_2$ and the diagonal elements of $B_0^{-1}$ are positive.
+    \item Plot the structural impulse response functions using \texttt{IRFs.m} for the level of GDP and the unemployment rate. Interpret your results in economic terms.
+\end{enumerate}

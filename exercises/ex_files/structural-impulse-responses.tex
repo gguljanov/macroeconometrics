@@ -1,0 +1,32 @@
+Consider the structural VAR(p) model $$y_t = B_1 y_{t-1} + ... + B_{p} y_{t-p} + \varepsilon_{t}$$
+where the dimension of $B_i$, $i = 0,...,p$, is $K \times K$. The $K \times 1$ vector of structural shocks $\varepsilon_{t}$ is assumed to be white noise with covariance matrix $E(\varepsilon_t \varepsilon_t') = I_K$. That is, the Elements of $\varepsilon_t$ are mutually uncorrelated and also have a clear interpretation in terms on an underlying economic model. The reduced-form VAR(p) model is given by
+$$y_t = \underbrace{B_0^{-1}B_1}_{A_1}y_t + ... + \underbrace{B_0^{-1}B_p}_{A_p} y_{t-p} + \underbrace{B_0^{-1}\varepsilon_t}_{u_t}$$
+where the reduced-form error covariance matrix is $E(u_t u_t')=\Sigma_u = B_0^{-1}B_0^{-1'}$. Going back and forth between the structural and the reduced-form representation requires knowledge of the structural impact matrix $B_0^{-1}$. For now, assume that $B_0^{-1}$ is a known matrix. We are interested in the response of each element of $y_t$ to a one-time impulse in $\varepsilon_{t}$:
+$$\frac{\partial y_{t+h}}{\partial \varepsilon_{t}'} = \Theta_h, \quad h=0,1,2,...,H$$
+where $\Theta_h$ is a $K\times K$ matrix with individual elements $\theta_{jk,h}=\frac{\partial y_{j,t+h}}{\partial \varepsilon_{k,t}}$.
+\begin{enumerate}
+    \item Usually the objective is to plot the responses of each variable to each structural shock. How many so-called impulse response functions do we need to plot?
+          \begin{solution}
+              There are $K$ variables and $K$ structural shocks, hence there are $K^2$ IRFs each of length $H+1$
+          \end{solution}
+    \item Consider the VAR(1) representation of the VAR(p) process, i.e. $$Y_t = A Y_{t-1} + U_t$$ where \begin{footnotesize}
+              $$Y_t = \begin{pmatrix}
+                      y_t \\ \vdots\\ y_{t-p+1}
+                  \end{pmatrix},
+                  A = \begin{pmatrix}
+                      A_1    & A_2 & ...    & A_{p-1} & A_p    \\
+                      I_k    & 0   & ...    & 0       & 0      \\
+                      0      & I_K & ...    & 0       & 0      \\
+                      \vdots &     & \ddots & \vdots  & \vdots \\
+                      0      & 0   & ...    & I_k     & 0
+                  \end{pmatrix},
+                  U_t = \begin{pmatrix} u_t\\0\\\vdots\\0 \end{pmatrix}$$
+          \end{footnotesize}
+          Show that $$y_{t+h} = J A^{h+1} Y_{t-1}+ \sum_{j=0}^h J A^j J' u_{t+h-j}$$ where $J=[I_k, 0_{K\times K(p-1)}]$.
+    \item Derive an expression for $\Theta_h$ in terms of $J$, $A$ and $B_0^{-1}$.
+    \item How would you infer from the response of the inflation rate, say $\Delta p_t$ the implied response of the log price level $p_t$?
+          \begin{solution}
+              $p_{t+h}=p_{t-1}+\Delta p_t +\Delta p_{t+1} + ...+\Delta p_{t+h}$ That is we cumulate the persones of the inflation rate (cumsum!)
+          \end{solution}
+    \item Write a function that plots the IRFs given inputs $A$, $\Sigma_u$, $B_0^{-1}$, number of lags $p$ and maximum horizon $H$.
+\end{enumerate}

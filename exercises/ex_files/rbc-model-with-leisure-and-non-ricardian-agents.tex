@@ -1,0 +1,92 @@
+Consider the basic Real Business Cycle (RBC) model with leisure and non-Ricardian agents. Assume that there is a continuum of consumers given on the interval $[0,1]$. A proportion of the population, $\omega$, are Ricardian agents who have access to financial markets and are indexed by $i \in [0,\omega)$. The other part of the population, $1-\omega$, is composed of non-Ricardian agents who do not have access to financial markets and are indexed by $j \in (\omega,1]$.
+
+A Ricardian household maximizes present as well as expected future utility
+\begin{align*}
+    \underset{\{C_{i,t},I_{i,t},L_{i,t},K_{i,t}\}}{\max} E_t \sum_{s=0}^{\infty} \beta^{s} U_{i,t+s}
+\end{align*}
+with $\beta <1$ denoting the discount factor and $E_t$ is expectation given information at time $t$. The contemporaneous utility function
+\begin{align*}
+    U_{i,t} = \gamma \ln C_{i,t} + (1-\gamma) \ln{(1-L_{i,t})}
+\end{align*}
+has two arguments: consumption $C_{i,t}$ and labor $L_{i,t}$. The marginal utility of consumption is positive, whereas more labor reduces utility. Accordingly, $\gamma$ is the elasticity of substitution between consumption and labor. In each period the household takes the real wage $W_t$ as given and supplies perfectly elastic labor service to the representative firm. In return, she receives real labor income in the amount of $W_t L_{i,t}$ and, additionally, profits $\Pi_{i,t}$ from the firm as well as revenue from lending capital in the previous period $K_{i,t-1}$ at interest rate $R_t$ to the firms, as it is assumed that the firm and capital stock are owned by the Ricardian households. Income and wealth are used to finance consumption $C_{i,t}$ and investment $I_{i,t}$. In total, this defines the (real) budget constraint of the Ricardian agent:
+\begin{align*}
+    C_{i,t} + I_{i,t} = W_t L_{i,t} + R_t K_{i,t-1} + \Pi_{i,t}
+\end{align*}
+
+The law of motion for capital $K_{i,t}$ at the end of period $t$ is given by
+\begin{align*}
+    K_{i,t} = (1-\delta)K_{i,t-1} + I_{i,t}
+\end{align*}
+where $\delta$ is the depreciation rate. Assume that the transversality condition is full-filled.
+
+A non-Ricardian household maximizes present as well as expected future utility
+\begin{align*}
+    \underset{\{C_{j,t},L_{j,t}\}}{\max} E_t \sum_{s=0}^{\infty} \beta^{s} U_{j,t+s}
+\end{align*}
+The contemporaneous utility function is the same as for non-Ricardian households, i.e.
+\begin{align*}
+    U_{j,t} = \gamma \ln C_{j,t} + (1-\gamma) \ln{(1-L_{j,t})}
+\end{align*}
+As non-Ricardian agents do not have access to the credit market, their (real) budget constraint is given by:
+\begin{align*}
+    C_{j,t} = W_t L_{j,t}
+\end{align*}
+
+It is assumed that all agents, independently the group they belong to, are identical. Therefore, aggregate values (in per capita terms) are given by:
+\begin{align*}
+    C_t = \omega C_{i,t} + (1-\omega)C_{j,t}, &  & L_t = \omega L_{i,t} + (1-\omega)L_{j,t}, &  & K_t = \omega K_{i,t} &  & I_t = \omega I_{i,t}
+\end{align*}
+where the right two expressions are due to the fact that only Ricardian agents invest in physical capital.
+
+Productivity $A_t$ is the driving force of the economy and evolves according to
+\begin{align*}
+    \ln{A_{t}} & = \rho_A \ln{A_{t-1}}  + \varepsilon_t^A
+\end{align*}
+where $\rho_A$ denotes the persistence parameter and $\varepsilon_t^A$ is assumed to be normally distributed with mean zero and variance $\sigma_A^2$.
+
+Real profits $\Pi_t = \omega \Pi_{i,t}$ of the representative firm are revenues from selling output $Y_t$ minus costs from labor $W_t L_t$ and renting capital $R_t K_{t-1}$:
+\begin{align*}
+    \Pi_t = Y_{t} - W_{t} L_{t} - R_{t} K_{t-1}
+\end{align*}
+The representative firm maximizes expected profits
+\begin{align*}
+    \underset{\{L_{t},K_{t-1}\}}{\max} E_t \sum_{j=0}^{\infty} \beta^j Q_{t+j}\Pi_{t+j}
+\end{align*}
+subject to a Cobb-Douglas production function
+\begin{align*}
+    Y_t = A_t K_{t-1}^\alpha L_t^{1-\alpha}
+\end{align*}
+The discount factor takes into account that firms are owned by the Ricardian households, i.e. $\beta^s Q_{t+s}$ is the present value of a unit of consumption in period $t+s$ or, respectively, the marginal utility of an additional unit of profit; therefore $Q_{t+s}=\frac{\partial U_{i,t+s}/\partial C_{i,t+s}}{\partial U_{i,t}/\partial C_{i,t}}$.
+
+Finally, we have the non-negativity constraints	$K_{i,t} \geq0$, $C_{i,t} \geq 0$, $C_{j,t} \geq 0$, $0\leq L_{i,t} \leq 1$ and $0\leq L_{j,t} \leq 1$. Furthermore, clearing of the labor as well as goods market in equilibrium implies
+\begin{align*}
+    Y_t = C_t + I_t
+\end{align*}
+
+\begin{enumerate}
+    \item Briefly provide intuition behind the introduction of non-Ricardian households.
+    \item Show that the first-order conditions of the agents are given by
+          \begin{align*}
+              E_t\left[\frac{C_{i,t+1}}{C_{i,t}}\right] = \beta E_t\left[1-\delta + R_{t+1}\right], &  &
+              W_t = \frac{1-\gamma}{\gamma} \frac{C_{i,t}}{1-L_{i,t}},                                   \\
+              C_{j,t} = W_t L_{j,t},                                                                &  &
+              W_t = \frac{1-\gamma}{\gamma} \frac{C_{j,t}}{1-L_{j,t}}.
+          \end{align*}
+          Interpret these equations in economic terms.
+
+    \item Show that the first-order conditions of the representative firm are given by
+          \begin{align*}
+              W_t = (1-\alpha) A_t \left(\frac{K_{t-1}}{L_t}\right)^\alpha, &  & R_t = \alpha A_t \left(\frac{L_t}{K_{t-1}}\right)^{1-\alpha}
+          \end{align*}
+          Interpret these equations in economic terms.
+    \item Discuss how to calibrate the parameter $\omega$.
+    \item Write a DYNARE mod file for this model with a feasible calibration and compute the steady state of the model either analytically or numerically.
+    \item Study the effects of a positive aggregate productivity shock using an impulse response analysis for each group as well as on aggregate variables. What are the main differences relative to the same shock in the basic RBC model without non-Ricardian agents, i.e. $\omega=1$?
+    \item Simulate data for consumption growth for 200 periods. Estimate three parameters (of your choosing) with
+          \begin{itemize}
+              \item[(i)] maximum likelihood methods
+              \item[(ii)] Bayesian methods
+          \end{itemize}
+          Provide feasible upper and lower bounds and discuss the intuition behind your priors.
+    \item Explain whether or not you are satisfied with your estimation results?
+\end{enumerate}
