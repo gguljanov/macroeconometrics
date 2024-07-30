@@ -1,0 +1,18 @@
+Analyze the quarterly growth rate of gross domestic product (GDP) in Norway. The data is given in the excel file \texttt{Quarterly\_GDP\_Norway.xlsx}. To this end, do the following:
+\begin{itemize}
+    \item Load the data. Save the dates and data in two variables.
+    \item Create a new figure and plot the data. Name it \enquote{Plot of data}.
+    \item Create a new figure and plot a histogram with 10 bins. Call it \enquote{Histogram of data}. Compare it to a fitted normal distribution.
+    \item Create a new figure and assess the fit to a normal distribution via a Q-Q plot. Call it \enquote{Normal probability plot}.
+    \item Give a numerical estimator for the average growth rate and its standard deviation in the sample.
+\end{itemize}
+\begin{solution}\textbf{Solution to \nameref{ex:VisualizingTSData}}
+    \lstinputlisting{../progs/VisualizeData.m}
+    Remarks:
+    \begin{itemize}
+        \item A growth rate is usually approximated using logs $$\frac{Y_t - Y_{t-p}}{Y_{t-p}} \approx log \left(\frac{Y_t}{Y_{t-p}}\right)$$, where $p=1$ would correspond to one period lagged. For quarterly we would set $p=4$ or for monthly $p=12$.
+        \item Normal distribution is not a very bad choice, even though the normal plot suggests some curvature in tails of distribution.
+        \item There is roughly a 50 percent probability that GDP growth will be 0.6.
+    \end{itemize}
+    \newpage
+\end{solution}
